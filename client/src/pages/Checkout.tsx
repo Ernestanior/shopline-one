@@ -154,7 +154,8 @@ export default function Checkout() {
     if (user && !hasLoadedUserData) {
       loadUserData();
     }
-  }, [user]); // Remove hasLoadedUserData from dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]); // Intentionally excluding hasLoadedUserData and loadUserData to prevent infinite loop
 
   const loadUserData = async () => {
     if (hasLoadedUserData) return; // Prevent multiple loads
@@ -289,7 +290,7 @@ export default function Checkout() {
     }
 
     return false;
-  }, [cartItems.length, step, errors]);
+  }, [cartItems.length, step, errors, useNewCard, selectedPaymentId]);
 
   const nextLabel = step === 'Review' ? 'Place order' : 'Continue';
 
