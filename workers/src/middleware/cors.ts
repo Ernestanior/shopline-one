@@ -27,6 +27,11 @@ export function createCorsMiddleware(env: Env) {
         return origin;
       }
 
+      // Allow Cloudflare Pages preview URLs (e.g., https://xxx.shopline-one.pages.dev)
+      if (origin.match(/^https:\/\/[a-z0-9-]+\.shopline-one\.pages\.dev$/)) {
+        return origin;
+      }
+
       // Check if origin is in allowed list
       if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
         return origin;
@@ -70,6 +75,11 @@ export async function corsCheck(c: Context<{ Bindings: Env }>, next: Next) {
 
   // Allow localhost in development
   if (origin.match(/^https?:\/\/localhost(:\d+)?$/)) {
+    return next();
+  }
+
+  // Allow Cloudflare Pages preview URLs
+  if (origin.match(/^https:\/\/[a-z0-9-]+\.shopline-one\.pages\.dev$/)) {
     return next();
   }
 
