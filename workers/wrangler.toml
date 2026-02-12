@@ -1,0 +1,53 @@
+name = "ecommerce-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# D1 数据库绑定（默认使用生产数据库）
+[[d1_databases]]
+binding = "DB"
+database_name = "ecommerce-db"
+database_id = "91a9ed99-1574-4543-9af6-ff77baf00ef8"
+
+# R2 存储桶绑定（暂时注释，需要在 Dashboard 中启用 R2）
+# [[r2_buckets]]
+# binding = "R2_BUCKET"
+# bucket_name = "ecommerce-uploads"
+
+# 环境变量
+[vars]
+ALLOWED_ORIGINS = "http://localhost:3000"
+
+# 密钥（使用 wrangler secret put JWT_SECRET 设置）
+# JWT_SECRET = "..."
+
+# 开发环境配置
+[env.development]
+name = "ecommerce-api-dev"
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "ecommerce-db-dev"
+database_id = "46109f96-e502-4f9c-8958-36663604e2b6"
+
+# [[env.development.r2_buckets]]
+# binding = "R2_BUCKET"
+# bucket_name = "ecommerce-uploads-dev"
+
+[env.development.vars]
+ALLOWED_ORIGINS = "http://localhost:3000"
+
+# 生产环境配置
+[env.production]
+name = "ecommerce-api"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "ecommerce-db"
+database_id = "91a9ed99-1574-4543-9af6-ff77baf00ef8"
+
+# [[env.production.r2_buckets]]
+# binding = "R2_BUCKET"
+# bucket_name = "ecommerce-uploads"
+
+[env.production.vars]
+ALLOWED_ORIGINS = "https://yourdomain.com,https://www.yourdomain.com"

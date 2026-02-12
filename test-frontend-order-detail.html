@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Order Detail API</title>
+</head>
+<body>
+  <h1>Test Order Detail API</h1>
+  <button onclick="testAPI()">Test Admin Order Detail</button>
+  <pre id="output"></pre>
+
+  <script>
+    async function testAPI() {
+      const output = document.getElementById('output');
+      output.textContent = 'Testing...\n';
+
+      try {
+        // Login first
+        output.textContent += 'Step 1: Login as admin...\n';
+        const loginRes = await fetch('http://localhost:5002/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            email: 'admin@xyvn.com',
+            password: 'admin123'
+          })
+        });
+        
+        const loginData = await loginRes.json();
+        output.textContent += `✓ Logged in as: ${loginData.user.email}\n`;
+        output.textContent += `  Is Admin: ${loginData.user.is_admin}\n\n`;
+
+        // Get orders list
+        output.textContent += 'Step 2: Get orders list...\n';
+        const ordersRes = await fetch('http://localhost:5002/api/admin/orders', {
+          credentials: 'include'
+        });
+        
+        const ordersData = await ordersRes.json();
+        output.textContent += `✓ Found ${ordersData.orders.length} orders\n\n`;
+
+        if (ordersData.orders.length > 0) {
+          const firstOrder = ordersData.orders[0];
+          output.textContent += `First order: #${firstOrder.id} - ${firstOrder.order_number}\n`;
+          output.textContent += `  Items count: ${firstOrder.items_count}\n\n`;
+
+          // Get order detail
+          output.textContent += `Step 3: Get order detail for ID ${firstOrder.id}...\n`;
+          const detailRes = await fetch(`http://localhost:5002/api/admin/orders/${firstOrder.id}`, {
+            credentials: 'include'
+          });
+          
+          const detailData = await detailRes.json();
+          output.textContent += '✓ Order detail received:\n';
+          output.textContent += JSON.stringify(detailData, null, 2);
+        }
+
+      } catch (error) {
+        output.textContent += `\n✗ Error: ${error.message}\n`;
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
