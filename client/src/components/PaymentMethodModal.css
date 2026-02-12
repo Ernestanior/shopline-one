@@ -1,0 +1,42 @@
+.payment-form {
+  padding: 32px;
+}
+
+.expiry-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.expiry-inputs select {
+  flex: 1;
+}
+
+.expiry-separator {
+  font-size: 20px;
+  color: #666666;
+  font-weight: 500;
+}
+
+.error-message {
+  display: block;
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.security-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-top: 20px;
+  color: #666666;
+  font-size: 14px;
+}
+
+.security-notice svg {
+  flex-shrink: 0;
+}

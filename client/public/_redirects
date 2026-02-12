@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects
+# Proxy API requests to Workers
+/api/*  https://api.yourdomain.com/:splat  200
+
+# SPA fallback - serve index.html for all other routes
+/*      /index.html  200
