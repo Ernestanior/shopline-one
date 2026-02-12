@@ -15,7 +15,7 @@ database_id = "91a9ed99-1574-4543-9af6-ff77baf00ef8"
 
 # 环境变量
 [vars]
-ALLOWED_ORIGINS = "http://localhost:3000"
+ALLOWED_ORIGINS = "https://shopline-one.pages.dev,http://localhost:3000"
 
 # 密钥（使用 wrangler secret put JWT_SECRET 设置）
 # JWT_SECRET = "..."
@@ -50,4 +50,4 @@ database_id = "91a9ed99-1574-4543-9af6-ff77baf00ef8"
 # bucket_name = "ecommerce-uploads"
 
 [env.production.vars]
-ALLOWED_ORIGINS = "https://yourdomain.com,https://www.yourdomain.com"
+ALLOWED_ORIGINS = "https://shopline-one.pages.dev"
