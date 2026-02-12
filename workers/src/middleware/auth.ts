@@ -75,7 +75,7 @@ export function setAuthCookie(c: Context, token: string) {
   setCookie(c, AUTH_COOKIE_NAME, token, {
     httpOnly: true,
     secure: true, // Always use secure in production
-    sameSite: 'Lax',
+    sameSite: 'None', // Changed from 'Lax' to 'None' for cross-site cookies
     path: '/',
     maxAge: 7 * 24 * 60 * 60 // 7 days
   });
@@ -88,7 +88,7 @@ export function clearAuthCookie(c: Context) {
   deleteCookie(c, AUTH_COOKIE_NAME, {
     httpOnly: true,
     secure: true,
-    sameSite: 'Lax',
+    sameSite: 'None', // Match the setting in setAuthCookie
     path: '/'
   });
 }
