@@ -135,10 +135,10 @@
 
  .hero-copy h1 {
   font-size: 56px;
-  font-weight: 300;
+  font-weight: 500;
   margin-top: 20px;
   margin-bottom: 20px;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.1em;
   line-height: 1.1;
   color: var(--color-text);
  }

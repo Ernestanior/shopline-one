@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin API Test</title>
+</head>
+<body>
+    <h1>Admin API Test</h1>
+    <button onclick="testAdminAPI()">Test Admin API</button>
+    <pre id="result"></pre>
+
+    <script>
+        async function testAdminAPI() {
+            const result = document.getElementById('result');
+            result.textContent = 'Testing...\n';
+
+            // Get token from localStorage
+            const token = localStorage.getItem('auth_token');
+            result.textContent += `Token: ${token ? 'Found' : 'Not found'}\n\n`;
+
+            if (!token) {
+                result.textContent += 'ERROR: No token found. Please login first.\n';
+                return;
+            }
+
+            // Test /api/auth/me
+            try {
+                result.textContent += 'Testing /api/auth/me...\n';
+                const meRes = await fetch('https://ecommerce-api.xyvn.workers.dev/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const meData = await meRes.json();
+                result.textContent += `Status: ${meRes.status}\n`;
+                result.textContent += `Response: ${JSON.stringify(meData, null, 2)}\n\n`;
+            } catch (error) {
+                result.textContent += `ERROR: ${error.message}\n\n`;
+            }
+
+            // Test /api/admin/users
+            try {
+                result.textContent += 'Testing /api/admin/users...\n';
+                const usersRes = await fetch('https://ecommerce-api.xyvn.workers.dev/api/admin/users', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const usersData = await usersRes.json();
+                result.textContent += `Status: ${usersRes.status}\n`;
+                result.textContent += `Response: ${JSON.stringify(usersData, null, 2)}\n\n`;
+            } catch (error) {
+                result.textContent += `ERROR: ${error.message}\n\n`;
+            }
+
+            // Test /api/admin/stats
+            try {
+                result.textContent += 'Testing /api/admin/stats...\n';
+                const statsRes = await fetch('https://ecommerce-api.xyvn.workers.dev/api/admin/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const statsData = await statsRes.json();
+                result.textContent += `Status: ${statsRes.status}\n`;
+                result.textContent += `Response: ${JSON.stringify(statsData, null, 2)}\n`;
+            } catch (error) {
+                result.textContent += `ERROR: ${error.message}\n`;
+            }
+        }
+    </script>
+</body>
+</html>
