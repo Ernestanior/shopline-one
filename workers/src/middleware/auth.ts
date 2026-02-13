@@ -12,14 +12,22 @@ const AUTH_COOKIE_NAME = 'shop_auth';
 
 /**
  * Authentication middleware
- * Extracts and verifies JWT token from cookie, attaches user to context
+ * Extracts and verifies JWT token from cookie or Authorization header, attaches user to context
  */
 export async function authMiddleware(c: Context<{ Bindings: Env }>, next: Next) {
   // Initialize user as null
   c.set('user', null);
 
-  // Get token from cookie
-  const token = getCookie(c, AUTH_COOKIE_NAME);
+  // Try to get token from Authorization header first
+  const authHeader = c.req.header('Authorization');
+  let token: string | undefined;
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.substring(7); // Remove 'Bearer ' prefix
+  } else {
+    // Fallback to cookie
+    token = getCookie(c, AUTH_COOKIE_NAME);
+  }
   
   if (!token) {
     return next();

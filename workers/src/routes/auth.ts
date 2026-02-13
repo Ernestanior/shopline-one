@@ -51,6 +51,7 @@ auth.post('/register', validate(schemas.register), async (c) => {
   setAuthCookie(c, token);
 
   return c.json({
+    token, // Add token to response
     user: {
       id: userId,
       email: normalizedEmail,
@@ -98,6 +99,7 @@ auth.post('/login', validate(schemas.login), async (c) => {
   setAuthCookie(c, token);
 
   return c.json({
+    token, // Add token to response
     user: {
       id: user.id,
       email: user.email,

@@ -24,11 +24,15 @@ export async function apiFetch<T>(input: RequestInfo | URL, options: ApiFetchOpt
     ? `${API_BASE_URL}${input}` 
     : input;
 
+  // Get token from localStorage
+  const token = localStorage.getItem('auth_token');
+
   const init: RequestInit = {
     ...rest,
     credentials: 'include',
     headers: {
       ...(json ? { 'Content-Type': 'application/json' } : {}),
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}), // Add Authorization header
       ...(headers || {})
     }
   };

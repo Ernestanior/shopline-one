@@ -38,23 +38,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refresh]);
 
   const login = useCallback(async (email: string, password: string) => {
-    await apiFetch<{ user: AuthUser }>('/api/auth/login', {
+    const data = await apiFetch<{ user: AuthUser; token: string }>('/api/auth/login', {
       method: 'POST',
       json: { email, password }
     });
+    // Save token to localStorage
+    if (data.token) {
+      localStorage.setItem('auth_token', data.token);
+    }
     await refresh();
   }, [refresh]);
 
   const register = useCallback(async (email: string, password: string) => {
-    await apiFetch<{ user: AuthUser }>('/api/auth/register', {
+    const data = await apiFetch<{ user: AuthUser; token: string }>('/api/auth/register', {
       method: 'POST',
       json: { email, password }
     });
+    // Save token to localStorage
+    if (data.token) {
+      localStorage.setItem('auth_token', data.token);
+    }
     await refresh();
   }, [refresh]);
 
   const logout = useCallback(async () => {
     await apiFetch<{ ok: boolean }>('/api/auth/logout', { method: 'POST' });
+    // Remove token from localStorage
+    localStorage.removeItem('auth_token');
     setUser(null);
   }, []);
 
