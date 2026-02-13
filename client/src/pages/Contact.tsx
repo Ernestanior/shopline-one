@@ -193,10 +193,10 @@ const Contact: React.FC = () => {
                 <div className="method-icon">💬</div>
                 <h3>Social Media</h3>
                 <div className="social-links">
-                  <a href="https://www.facebook.com/xyvn" target="_blank" rel="noopener noreferrer">Facebook (XYVN)</a>
-                  <a href="https://x.com/xyvn" target="_blank" rel="noopener noreferrer">X (XYVN)</a>
-                  <a href="https://www.instagram.com/xyvn/" target="_blank" rel="noopener noreferrer">Instagram (XYVN)</a>
-                  <a href="https://www.youtube.com/@XYVN" target="_blank" rel="noopener noreferrer">YouTube (XYVN)</a>
+                  <a href="https://www.facebook.com/xyvn" target="_blank" rel="noopener noreferrer">Facebook (Arvix)</a>
+                  <a href="https://x.com/xyvn" target="_blank" rel="noopener noreferrer">X (Arvix)</a>
+                  <a href="https://www.instagram.com/xyvn/" target="_blank" rel="noopener noreferrer">Instagram (Arvix)</a>
+                  <a href="https://www.youtube.com/@Arvix" target="_blank" rel="noopener noreferrer">YouTube (Arvix)</a>
                 </div>
               </div>
 

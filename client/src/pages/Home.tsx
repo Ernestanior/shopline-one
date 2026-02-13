@@ -172,7 +172,7 @@ const Home: React.FC = () => {
           <div className="hero-grid">
             <Reveal className="hero-copy">
               <div className="hero-kicker">Designed for daily rituals</div>
-              <h1>XYVN</h1>
+              <h1>Arvix</h1>
               <p>
                 Minimal tools that turn routine moments into calm, tactile experiences—built for focus, carry, and home.
               </p>

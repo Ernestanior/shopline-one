@@ -369,7 +369,7 @@ export default function Checkout() {
         });
 
         const orderId = result.order?.id || null; // Database ID
-        const orderNumber = result.order?.orderNumber || `XYVN-${Date.now()}`;
+        const orderNumber = result.order?.orderNumber || `Arvix-${Date.now()}`;
 
         const payload: LastOrder = {
           id: orderNumber,

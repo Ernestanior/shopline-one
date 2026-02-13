@@ -122,7 +122,7 @@ const ProductCollection: React.FC = () => {
         : '/images/burst/hero-minimal-workspace.jpg';
 
   useEffect(() => {
-    const pageTitle = currentCategory?.name ? `${currentCategory.name} – XYVN` : 'Collections – XYVN';
+    const pageTitle = currentCategory?.name ? `${currentCategory.name} – Arvix` : 'Collections – Arvix';
     document.title = pageTitle;
 
     const description = currentCategory?.description || '';
