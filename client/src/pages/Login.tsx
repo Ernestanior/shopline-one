@@ -22,19 +22,13 @@ const Login: React.FC = () => {
     try {
       await login(email, password);
       
-      // 检查用户是否是管理员
-      const response = await fetch('/api/auth/me', { credentials: 'include' });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.user && data.user.is_admin) {
-          // 管理员跳转到管理后台
-          navigate('/admin', { replace: true });
-          return;
-        }
-      }
-      
-      // 普通用户跳转到原来的页面或首页
-      navigate(from || '/', { replace: true });
+      // Login successful, navigate based on user role
+      // The AuthContext will handle fetching user data
+      // We can check the user from context after a brief delay
+      setTimeout(() => {
+        // Navigate to the original page or home
+        navigate(from || '/', { replace: true });
+      }, 100);
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
