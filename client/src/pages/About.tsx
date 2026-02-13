@@ -11,7 +11,7 @@ const About: React.FC = () => {
         <div className="about-hero__image">
           <img 
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80" 
-            alt="Arvix Workspace" 
+            alt="ARVIX Workspace" 
             loading="eager"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -23,7 +23,7 @@ const About: React.FC = () => {
         <div className="container">
           <Reveal>
             <div className="about-hero__content">
-              <h1>About Arvix</h1>
+              <h1>About ARVIX</h1>
               <p>Designing tools that enhance everyday life through minimalist innovation</p>
             </div>
           </Reveal>
@@ -68,12 +68,12 @@ const About: React.FC = () => {
             <div className="about-section">
               <h2>Our Story</h2>
               <p>
-                Arvix began with a simple question: How can we make everyday tools better? 
+                ARVIX began with a simple question: How can we make everyday tools better? 
                 From this question grew a commitment to minimalist design, functional innovation, and exceptional quality.
               </p>
               <p>
                 We believe that the best tools are those that disappear into your daily routine, 
-                working seamlessly until you forget they're even there. That's why every Arvix product 
+                working seamlessly until you forget they're even there. That's why every ARVIX product 
                 is designed with purpose, precision, and an unwavering attention to detail.
               </p>
             </div>
@@ -125,7 +125,7 @@ const About: React.FC = () => {
                     <div className="timeline-year">2020</div>
                     <div className="timeline-content">
                       <h4>Founded</h4>
-                      <p>Arvix was born from a passion for minimalist design</p>
+                      <p>ARVIX was born from a passion for minimalist design</p>
                     </div>
                   </div>
                 </Reveal>

@@ -232,7 +232,7 @@ const Cart: React.FC = () => {
                     <div className="rec-image">
                       <img 
                         src="/images/burst-products/p9-wrist-watches.jpg" 
-                        alt="Arvix 3 Series"
+                        alt="ARVIX 3 Series"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80';
@@ -240,7 +240,7 @@ const Cart: React.FC = () => {
                         loading="lazy"
                       />
                     </div>
-                    <h4>Arvix 3 Series</h4>
+                    <h4>ARVIX 3 Series</h4>
                     <p>$89.99</p>
                     <button className="btn-add-to-cart">Add to Cart</button>
                   </div>

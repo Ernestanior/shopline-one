@@ -33,14 +33,14 @@ const Header: React.FC = () => {
   const megaLinks = useMemo(() => {
     return {
       productivity: [
-        { name: 'Arvix 3 Series', path: '/collections/productivity' },
+        { name: 'ARVIX 3 Series', path: '/collections/productivity' },
         { name: 'The Dual plus', path: '/collections/productivity' },
         { name: 'The Dual', path: '/collections/productivity' },
         { name: 'Cache 3.0', path: '/collections/productivity' }
       ],
       mobility: [
         { name: 'The Wallet', path: '/collections/mobility' },
-        { name: 'Arvix 3 Series', path: '/collections/mobility' },
+        { name: 'ARVIX 3 Series', path: '/collections/mobility' },
         { name: 'Cache 3.0', path: '/collections/mobility' },
         { name: 'The Dual', path: '/collections/mobility' }
       ],
@@ -57,7 +57,7 @@ const Header: React.FC = () => {
     return {
       productivity: [
         {
-          title: 'Arvix 3 Series',
+          title: 'ARVIX 3 Series',
           path: '/collections/productivity',
           image: '/images/burst/product-flatlay-notebooks.jpg'
         },
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
       ],
       mobility: [
         {
-          title: 'Arvix 3 Series',
+          title: 'ARVIX 3 Series',
           path: '/collections/mobility',
           image: '/images/burst/product-laptop-white-desk.jpg'
         },
@@ -219,7 +219,7 @@ const Header: React.FC = () => {
       <nav className="navbar">
         <div className="nav-container">
           <Link to="/" className="logo">
-            Arvix
+            ARVIX
           </Link>
 
           <div

@@ -135,7 +135,7 @@ const Search: React.FC<SearchProps> = ({ isOpen, onClose }) => {
             <div className="search-suggestions">
               <h3>Popular Searches</h3>
               <div className="suggestion-tags">
-                <span onClick={() => setQuery('Arvix')}>Arvix</span>
+                <span onClick={() => setQuery('ARVIX')}>ARVIX</span>
                 <span onClick={() => setQuery('Wallet')}>Wallet</span>
                 <span onClick={() => setQuery('Productivity')}>Productivity</span>
                 <span onClick={() => setQuery('Tool')}>Tool</span>

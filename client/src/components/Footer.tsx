@@ -78,10 +78,10 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h4>Follow Us</h4>
             <div className="social-links">
-              <a href="https://www.facebook.com/xyvn" target="_blank" rel="noopener noreferrer">Facebook (Arvix)</a>
-              <a href="https://x.com/xyvn" target="_blank" rel="noopener noreferrer">X (Arvix)</a>
-              <a href="https://www.instagram.com/xyvn/" target="_blank" rel="noopener noreferrer">Instagram (Arvix)</a>
-              <a href="https://www.youtube.com/@Arvix" target="_blank" rel="noopener noreferrer">YouTube (Arvix)</a>
+              <a href="https://www.facebook.com/xyvn" target="_blank" rel="noopener noreferrer">Facebook (ARVIX)</a>
+              <a href="https://x.com/xyvn" target="_blank" rel="noopener noreferrer">X (ARVIX)</a>
+              <a href="https://www.instagram.com/xyvn/" target="_blank" rel="noopener noreferrer">Instagram (ARVIX)</a>
+              <a href="https://www.youtube.com/@ARVIX" target="_blank" rel="noopener noreferrer">YouTube (ARVIX)</a>
             </div>
           </div>
         </div>
