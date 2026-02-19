@@ -79,4 +79,42 @@ orders.post('/', validate(schemas.createOrder), async (c) => {
   }, 201);
 });
 
+// Get order by ID (public - for payment page)
+orders.get('/:id', async (c) => {
+  const orderId = c.req.param('id');
+  const db = new DatabaseService(c.env.DB);
+
+  // Get order
+  const order = await db.queryOne(
+    'SELECT * FROM orders WHERE id = ?',
+    [orderId]
+  );
+
+  if (!order) {
+    return c.json({ error: 'Order not found' }, 404);
+  }
+
+  // Get order items
+  const items = await db.query(
+    'SELECT * FROM order_items WHERE order_id = ?',
+    [orderId]
+  );
+
+  return c.json({
+    order: {
+      id: order.id,
+      orderNumber: order.order_number,
+      totalAmount: order.total_amount,
+      status: order.status,
+      items: items.map((item: any) => ({
+        id: item.product_id,
+        name: item.product_name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.product_image
+      }))
+    }
+  });
+});
+
 export { orders as orderRoutes };

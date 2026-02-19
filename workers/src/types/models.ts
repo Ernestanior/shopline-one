@@ -119,3 +119,50 @@ export interface NewsletterSubscriber {
   created_at: string;
   updated_at: string;
 }
+
+// Payment-related models
+export interface PaymentTransaction {
+  id: string;
+  order_id: string;
+  gateway: string;
+  gateway_transaction_id: string | null;
+  amount: number; // Amount in cents
+  currency: string;
+  payment_method: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  paid_at: string | null;
+  expired_at: string | null;
+}
+
+export interface PaymentCallback {
+  id: number;
+  transaction_id: string;
+  gateway: string;
+  callback_data: string; // JSON string
+  status: string;
+  error_message: string | null;
+  created_at: string;
+}
+
+export interface PaymentRefund {
+  id: string;
+  transaction_id: string;
+  amount: number; // Amount in cents
+  reason: string | null;
+  status: string;
+  gateway_refund_id: string | null;
+  created_at: string;
+  processed_at: string | null;
+}
+
+export interface PaymentSecurityLog {
+  id: number;
+  event_type: string;
+  gateway: string | null;
+  ip_address: string | null;
+  user_agent: string | null;
+  request_data: string | null; // JSON string
+  created_at: string;
+}

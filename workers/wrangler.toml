@@ -2,6 +2,11 @@ name = "ecommerce-api"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
+# Cron Triggers
+# Run payment expiration check every hour
+[triggers]
+crons = ["0 * * * *"]
+
 # D1 数据库绑定（默认使用生产数据库）
 [[d1_databases]]
 binding = "DB"
@@ -15,14 +20,42 @@ database_id = "91a9ed99-1574-4543-9af6-ff77baf00ef8"
 
 # 环境变量
 [vars]
-ALLOWED_ORIGINS = "https://shopline-one.pages.dev,http://localhost:3000"
+ALLOWED_ORIGINS = "https://shopline-one.pages.dev,https://seedlight.tech,https://www.seedlight.tech,http://localhost:3000"
+PAYMENT_ENVIRONMENT = "test"
+FRONTEND_URL = "http://localhost:3000"
+API_URL = "http://localhost:8787"
+DEFAULT_CURRENCY = "TWD"
+CREDIT_CARD_EXPIRATION_MINUTES = "30"
+ATM_EXPIRATION_DAYS = "3"
+CVS_EXPIRATION_DAYS = "3"
+MAX_CONCURRENT_PENDING_PAYMENTS = "3"
+LOG_LEVEL = "INFO"
+ENABLE_PAYMENT_DEBUG_LOGS = "true"
+NEWEBPAY_VERSION = "2.0"
 
-# 密钥（使用 wrangler secret put JWT_SECRET 设置）
-# JWT_SECRET = "..."
+# 密钥（使用 wrangler secret put <KEY_NAME> 设置）
+# 必需的密钥：
+# - JWT_SECRET
+# - CSRF_SECRET
+# - NEWEBPAY_TEST_MERCHANT_ID
+# - NEWEBPAY_TEST_HASH_KEY
+# - NEWEBPAY_TEST_HASH_IV
+# - NEWEBPAY_PROD_MERCHANT_ID
+# - NEWEBPAY_PROD_HASH_KEY
+# - NEWEBPAY_PROD_HASH_IV
+# - ECPAY_TEST_MERCHANT_ID
+# - ECPAY_TEST_HASH_KEY
+# - ECPAY_TEST_HASH_IV
+# - ECPAY_PROD_MERCHANT_ID
+# - ECPAY_PROD_HASH_KEY
+# - ECPAY_PROD_HASH_IV
 
 # 开发环境配置
 [env.development]
 name = "ecommerce-api-dev"
+
+[env.development.triggers]
+crons = ["0 * * * *"]
 
 [[env.development.d1_databases]]
 binding = "DB"
@@ -35,10 +68,26 @@ database_id = "46109f96-e502-4f9c-8958-36663604e2b6"
 
 [env.development.vars]
 ALLOWED_ORIGINS = "http://localhost:3000"
+PAYMENT_ENVIRONMENT = "test"
+FRONTEND_URL = "http://localhost:3000"
+API_URL = "http://localhost:8787"
+DEFAULT_CURRENCY = "TWD"
+CREDIT_CARD_EXPIRATION_MINUTES = "30"
+ATM_EXPIRATION_DAYS = "3"
+CVS_EXPIRATION_DAYS = "3"
+MAX_CONCURRENT_PENDING_PAYMENTS = "3"
+LOG_LEVEL = "DEBUG"
+ENABLE_PAYMENT_DEBUG_LOGS = "true"
+NEWEBPAY_VERSION = "2.0"
+NEWEBPAY_API_URL = "https://ccore.newebpay.com/MPG/mpg_gateway"
+ECPAY_API_URL = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
 
 # 生产环境配置
 [env.production]
 name = "ecommerce-api"
+
+[env.production.triggers]
+crons = ["0 * * * *"]
 
 [[env.production.d1_databases]]
 binding = "DB"
@@ -50,4 +99,17 @@ database_id = "91a9ed99-1574-4543-9af6-ff77baf00ef8"
 # bucket_name = "ecommerce-uploads"
 
 [env.production.vars]
-ALLOWED_ORIGINS = "https://shopline-one.pages.dev"
+ALLOWED_ORIGINS = "https://shopline-one.pages.dev,https://seedlight.tech,https://www.seedlight.tech"
+PAYMENT_ENVIRONMENT = "production"
+FRONTEND_URL = "https://shopline-one.pages.dev"
+API_URL = "https://ecommerce-api.your-domain.workers.dev"
+DEFAULT_CURRENCY = "TWD"
+CREDIT_CARD_EXPIRATION_MINUTES = "30"
+ATM_EXPIRATION_DAYS = "3"
+CVS_EXPIRATION_DAYS = "3"
+MAX_CONCURRENT_PENDING_PAYMENTS = "3"
+LOG_LEVEL = "INFO"
+ENABLE_PAYMENT_DEBUG_LOGS = "false"
+NEWEBPAY_VERSION = "2.0"
+NEWEBPAY_API_URL = "https://core.newebpay.com/MPG/mpg_gateway"
+ECPAY_API_URL = "https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5"

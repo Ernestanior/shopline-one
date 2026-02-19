@@ -14,6 +14,9 @@ import Register from './pages/Register';
 import Account from './pages/Account';
 import OrderDetail from './pages/OrderDetail';
 import Checkout from './pages/Checkout';
+import CheckoutPage from './pages/CheckoutPage';
+import PaymentReturnPage from './pages/PaymentReturnPage';
+import TransactionsPage from './pages/admin/TransactionsPage';
 import Admin from './pages/Admin';
 import { AuthProvider } from './auth/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
@@ -40,7 +43,10 @@ function AnimatedRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout/:orderId" element={<CheckoutPage />} />
+        <Route path="/payment/return/:orderId" element={<PaymentReturnPage />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/transactions" element={<TransactionsPage />} />
         <Route
           path="/account"
           element={

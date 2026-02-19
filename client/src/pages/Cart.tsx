@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
+import { apiFetch } from '../lib/api';
 import Reveal from '../components/Reveal';
 import './Cart.css';
 
@@ -12,8 +14,12 @@ interface CartItem {
 }
 
 const Cart: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string>('');
 
   useEffect(() => {
     const loadCart = () => {
@@ -77,6 +83,13 @@ const Cart: React.FC = () => {
 
   const getTotalItems = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) return;
+
+    // Navigate to checkout page to collect address information
+    navigate('/checkout');
   };
 
   if (loading) {
@@ -204,13 +217,30 @@ const Cart: React.FC = () => {
                     <span>${getGrandTotal().toFixed(2)}</span>
                   </div>
 
-                  <Link to="/checkout" className="btn-checkout">
+                  {checkoutError && (
+                    <div className="checkout-error" style={{
+                      padding: '12px',
+                      marginBottom: '16px',
+                      background: '#fee',
+                      color: '#c33',
+                      borderRadius: '8px',
+                      fontSize: '14px'
+                    }}>
+                      {checkoutError}
+                    </div>
+                  )}
+
+                  <button 
+                    onClick={handleCheckout}
+                    className="btn-checkout"
+                    disabled={cartItems.length === 0}
+                  >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                       <path d="M9 12l2 2 4-4"></path>
                     </svg>
                     Secure checkout
-                  </Link>
+                  </button>
 
                   <div className="checkout-microcopy">
                     Taxes and shipping calculated at checkout. Your payment details are encrypted.

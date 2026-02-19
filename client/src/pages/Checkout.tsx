@@ -249,23 +249,8 @@ export default function Checkout() {
     if (!address.address1.trim()) e.address1 = 'Address is required';
     if (!address.postalCode.trim()) e.postalCode = 'Postal code is required';
 
-    // Only validate card if using new card
-    if (useNewCard || savedPaymentMethods.length === 0) {
-      if (!cardDigits) e.cardNumber = 'Card number is required';
-      else if (cardDigits.length < 12) e.cardNumber = 'Card number looks too short';
-
-      if (!card.nameOnCard.trim()) e.nameOnCard = 'Name on card is required';
-
-      if (!card.expiry.trim()) e.expiry = 'Expiry is required';
-      else if (!isValidExpiry(card.expiry)) e.expiry = 'Use MM/YY';
-
-      if (!cvcDigits) e.cvc = 'CVC is required';
-      else if (cvcDigits.length < 3) e.cvc = 'CVC looks too short';
-      else if (cvcDigits.length > 4) e.cvc = 'CVC is invalid';
-    }
-
     return e;
-  }, [address, card.expiry, card.nameOnCard, cardDigits, contact.email, cvcDigits, useNewCard, savedPaymentMethods.length]);
+  }, [address, contact.email]);
 
   const canGoNext = useMemo(() => {
     if (cartItems.length === 0) return false;
@@ -285,12 +270,12 @@ export default function Checkout() {
     }
 
     if (step === 'Review') {
-      return !(errors.cardNumber || errors.nameOnCard || errors.expiry || errors.cvc) || 
-             (!useNewCard && selectedPaymentId !== null);
+      // Review step only needs address and contact info, no payment validation
+      return true;
     }
 
     return false;
-  }, [cartItems.length, step, errors, useNewCard, selectedPaymentId]);
+  }, [cartItems.length, step, errors]);
 
   const nextLabel = step === 'Review' ? 'Place order' : 'Continue';
 
@@ -397,7 +382,13 @@ export default function Checkout() {
         }
 
         setCartItems([]);
-        setStepIndex(3);
+        
+        // Navigate to payment page with Taiwan payment gateways
+        if (orderId) {
+          navigate(`/checkout/${orderId}`);
+        } else {
+          setStepIndex(3);
+        }
       } catch (error) {
         console.error('Order creation error:', error);
         setOrderError('Failed to create order. Please try again.');
@@ -627,113 +618,10 @@ export default function Checkout() {
               {step === 'Review' && (
                 <Reveal>
                   <section className="checkout-section">
-                    <h2>Payment details</h2>
+                    <h2>Review your order</h2>
                     
-                    {user && savedPaymentMethods.length > 0 && (
-                      <div className="payment-methods-selector">
-                        <h3>Select payment method</h3>
-                        <div className="saved-payment-methods">
-                          {savedPaymentMethods.map((method) => (
-                            <label key={method.id} className="payment-method-option">
-                              <input
-                                type="radio"
-                                name="payment-method"
-                                checked={selectedPaymentId === method.id && !useNewCard}
-                                onChange={() => {
-                                  setSelectedPaymentId(method.id);
-                                  setUseNewCard(false);
-                                }}
-                              />
-                              <div className="payment-method-card">
-                                <div className="payment-method-info">
-                                  <span className="card-brand">{method.card_type.toUpperCase()}</span>
-                                  <span className="card-number">•••• {method.card_last4}</span>
-                                </div>
-                                <div className="payment-method-meta">
-                                  <span>{method.card_holder_name}</span>
-                                  <span>Expires {method.expiry_month}/{String(method.expiry_year).slice(-2)}</span>
-                                </div>
-                              </div>
-                            </label>
-                          ))}
-                          
-                          <label className="payment-method-option">
-                            <input
-                              type="radio"
-                              name="payment-method"
-                              checked={useNewCard}
-                              onChange={() => setUseNewCard(true)}
-                            />
-                            <div className="payment-method-card payment-method-new">
-                              <span>+ Add new card</span>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                    )}
-
-                    {(useNewCard || savedPaymentMethods.length === 0) && (
-                      <div className="checkout-form">
-                        <div className="form-group">
-                          <label htmlFor="cardNumber">Card number</label>
-                          <input
-                            id="cardNumber"
-                            inputMode="numeric"
-                            value={card.cardNumber}
-                            onBlur={() => setTouched((t) => ({ ...t, cardNumber: true }))}
-                            onChange={(e) => setCard((v) => ({ ...v, cardNumber: formatCardNumberInput(e.target.value) }))}
-                            placeholder="1234 5678 9012 3456"
-                          />
-                          {touched.cardNumber && errors.cardNumber && <div className="field-error">{errors.cardNumber}</div>}
-                        </div>
-
-                        <div className="form-group">
-                          <label htmlFor="nameOnCard">Name on card</label>
-                          <input
-                            id="nameOnCard"
-                            value={card.nameOnCard}
-                            onBlur={() => setTouched((t) => ({ ...t, nameOnCard: true }))}
-                            onChange={(e) => setCard((v) => ({ ...v, nameOnCard: e.target.value }))}
-                            placeholder="Full name"
-                          />
-                          {touched.nameOnCard && errors.nameOnCard && <div className="field-error">{errors.nameOnCard}</div>}
-                        </div>
-
-                        <div className="form-row">
-                          <div className="form-group">
-                            <label htmlFor="expiry">Expiry</label>
-                            <input
-                              id="expiry"
-                              inputMode="numeric"
-                              value={card.expiry}
-                              onBlur={() => setTouched((t) => ({ ...t, expiry: true }))}
-                              onChange={(e) => setCard((v) => ({ ...v, expiry: formatExpiryInput(e.target.value) }))}
-                              placeholder="MM/YY"
-                            />
-                            {touched.expiry && errors.expiry && <div className="field-error">{errors.expiry}</div>}
-                          </div>
-                          <div className="form-group">
-                            <label htmlFor="cvc">CVC</label>
-                            <input
-                              id="cvc"
-                              inputMode="numeric"
-                              value={card.cvc}
-                              onBlur={() => setTouched((t) => ({ ...t, cvc: true }))}
-                              onChange={(e) => setCard((v) => ({ ...v, cvc: onlyDigits(e.target.value).slice(0, 4) }))}
-                              placeholder="123"
-                            />
-                            {touched.cvc && errors.cvc && <div className="field-error">{errors.cvc}</div>}
-                          </div>
-                        </div>
-
-                        <div className="checkout-note">
-                          This is a demo checkout. Your payment details are not processed.
-                        </div>
-                      </div>
-                    )}
-
                     <div className="checkout-review">
-                      <h3>Review</h3>
+                      <h3>Order Summary</h3>
                       <div className="checkout-review-grid">
                         <div>
                           <div className="review-label">Contact</div>

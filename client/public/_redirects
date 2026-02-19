@@ -1,5 +1,2 @@
-# Proxy API requests to Workers
-/api/*  https://api.seedlight.tech/api/:splat  200
-
 # SPA fallback
 /*  /index.html  200

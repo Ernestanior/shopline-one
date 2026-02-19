@@ -11,11 +11,13 @@ import type { Env } from '../types/env';
  * Create CORS middleware with allowed origins from environment
  */
 export function createCorsMiddleware(env: Env) {
-  const allowedOriginsStr = env.ALLOWED_ORIGINS || '';
-  const allowedOrigins = allowedOriginsStr
-    .split(',')
-    .map(o => o.trim())
-    .filter(Boolean);
+  // Hardcode seedlight.tech for now
+  const allowedOrigins = [
+    'https://shopline-one.pages.dev',
+    'https://seedlight.tech',
+    'https://www.seedlight.tech',
+    'http://localhost:3000'
+  ];
 
   return cors({
     origin: (origin) => {
@@ -27,13 +29,13 @@ export function createCorsMiddleware(env: Env) {
         return origin;
       }
 
-      // Allow Cloudflare Pages preview URLs (e.g., https://xxx.shopline-one.pages.dev)
+      // Allow Cloudflare Pages preview URLs
       if (origin.match(/^https:\/\/[a-z0-9-]+\.shopline-one\.pages\.dev$/)) {
         return origin;
       }
 
       // Check if origin is in allowed list
-      if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      if (allowedOrigins.includes(origin)) {
         return origin;
       }
 
@@ -62,11 +64,14 @@ export async function corsCheck(c: Context<{ Bindings: Env }>, next: Next) {
 
   // For mutating requests, check origin
   const origin = c.req.header('origin');
-  const allowedOriginsStr = c.env.ALLOWED_ORIGINS || '';
-  const allowedOrigins = allowedOriginsStr
-    .split(',')
-    .map(o => o.trim())
-    .filter(Boolean);
+  
+  // Hardcode allowed origins
+  const allowedOrigins = [
+    'https://shopline-one.pages.dev',
+    'https://seedlight.tech',
+    'https://www.seedlight.tech',
+    'http://localhost:3000'
+  ];
 
   // Allow if no origin (same-origin or non-browser)
   if (!origin) {
@@ -84,7 +89,7 @@ export async function corsCheck(c: Context<{ Bindings: Env }>, next: Next) {
   }
 
   // Check if origin is allowed
-  if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+  if (allowedOrigins.includes(origin)) {
     return next();
   }
 
