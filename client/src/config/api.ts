@@ -3,8 +3,10 @@
  * Configures API base URL for different environments
  */
 
-// Get API URL from environment variable or use default
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8787';
+// Get API URL from environment variable
+// Empty string means use relative URLs (for _redirects proxy)
+const envApiUrl = process.env.REACT_APP_API_URL;
+export const API_BASE_URL = envApiUrl === undefined ? 'http://localhost:8787' : envApiUrl;
 
 // API endpoints
 export const API_ENDPOINTS = {
