@@ -18,12 +18,40 @@ export async function sha256(data: string): Promise<string> {
 }
 
 /**
- * Encrypt data using AES-256-CBC
+ * Add PKCS7 padding to data
+ * @param data - The data to pad
+ * @param blockSize - Block size in bytes (default 32 for AES-256)
+ * @returns Padded data
+ */
+function addPadding(data: Uint8Array, blockSize: number = 32): Uint8Array {
+  const len = data.length;
+  const pad = blockSize - (len % blockSize);
+  const paddedData = new Uint8Array(len + pad);
+  paddedData.set(data);
+  // Fill padding bytes with the padding value
+  for (let i = len; i < len + pad; i++) {
+    paddedData[i] = pad;
+  }
+  return paddedData;
+}
+
+/**
+ * Remove PKCS7 padding from data
+ * @param data - The padded data
+ * @returns Unpadded data
+ */
+function removePadding(data: Uint8Array): Uint8Array {
+  const pad = data[data.length - 1];
+  return data.slice(0, data.length - pad);
+}
+
+/**
+ * Encrypt data using AES-256-CBC (NewebPay format)
  * Used for NewebPay TradeInfo encryption
  * @param data - The plaintext string to encrypt
  * @param key - The encryption key (HashKey)
  * @param iv - The initialization vector (HashIV)
- * @returns Base64-encoded encrypted string
+ * @returns Hex-encoded encrypted string
  */
 export async function aesEncrypt(data: string, key: string, iv: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -32,6 +60,9 @@ export async function aesEncrypt(data: string, key: string, iv: string): Promise
   const keyBuffer = encoder.encode(key);
   const ivBuffer = encoder.encode(iv);
   const dataBuffer = encoder.encode(data);
+  
+  // Add PKCS7 padding
+  const paddedData = addPadding(dataBuffer, 32);
   
   // Import key for AES-CBC
   const cryptoKey = await crypto.subtle.importKey(
@@ -42,24 +73,26 @@ export async function aesEncrypt(data: string, key: string, iv: string): Promise
     ['encrypt']
   );
   
-  // Encrypt
+  // Encrypt with OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING equivalent
   const encryptedBuffer = await crypto.subtle.encrypt(
     { name: 'AES-CBC', iv: ivBuffer },
     cryptoKey,
-    dataBuffer
+    paddedData
   );
   
-  // Convert to base64
+  // Convert to hex (not base64!)
   const encryptedArray = new Uint8Array(encryptedBuffer);
-  const base64 = btoa(String.fromCharCode(...encryptedArray));
+  const hexString = Array.from(encryptedArray)
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
   
-  return base64;
+  return hexString;
 }
 
 /**
- * Decrypt data using AES-256-CBC
+ * Decrypt data using AES-256-CBC (NewebPay format)
  * Used for NewebPay TradeInfo decryption
- * @param encryptedData - Base64-encoded encrypted string
+ * @param encryptedData - Hex-encoded encrypted string
  * @param key - The decryption key (HashKey)
  * @param iv - The initialization vector (HashIV)
  * @returns Decrypted plaintext string
@@ -72,11 +105,10 @@ export async function aesDecrypt(encryptedData: string, key: string, iv: string)
   const keyBuffer = encoder.encode(key);
   const ivBuffer = encoder.encode(iv);
   
-  // Decode base64
-  const encryptedString = atob(encryptedData);
-  const encryptedArray = new Uint8Array(encryptedString.length);
-  for (let i = 0; i < encryptedString.length; i++) {
-    encryptedArray[i] = encryptedString.charCodeAt(i);
+  // Decode hex to bytes
+  const encryptedArray = new Uint8Array(encryptedData.length / 2);
+  for (let i = 0; i < encryptedData.length; i += 2) {
+    encryptedArray[i / 2] = parseInt(encryptedData.substr(i, 2), 16);
   }
   
   // Import key for AES-CBC
@@ -95,8 +127,12 @@ export async function aesDecrypt(encryptedData: string, key: string, iv: string)
     encryptedArray
   );
   
+  // Remove PKCS7 padding
+  const decryptedArray = new Uint8Array(decryptedBuffer);
+  const unpaddedData = removePadding(decryptedArray);
+  
   // Convert to string
-  const decryptedText = decoder.decode(decryptedBuffer);
+  const decryptedText = decoder.decode(unpaddedData);
   
   return decryptedText;
 }

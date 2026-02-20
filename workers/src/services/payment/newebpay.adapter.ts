@@ -47,18 +47,22 @@ export class NewebPayAdapter implements PaymentGateway {
         CVS: params.paymentMethod === PaymentMethod.CONVENIENCE_STORE ? 1 : 0,
       };
 
-      // 2. AES encrypt trade info
-      const tradeInfoJson = JSON.stringify(tradeInfo);
+      // 2. Convert to URL query string format (required by NewebPay)
+      const tradeInfoQueryString = new URLSearchParams(
+        Object.entries(tradeInfo).map(([key, value]) => [key, String(value)])
+      ).toString();
+
+      // 3. AES encrypt trade info
       const tradeInfoEncrypted = await aesEncrypt(
-        tradeInfoJson,
+        tradeInfoQueryString,
         this.config.hashKey,
         this.config.hashIV
       );
 
-      // 3. Generate check value (TradeSha)
+      // 4. Generate check value (TradeSha)
       const tradeSha = await this.generateCheckValue(tradeInfoEncrypted);
 
-      // 4. Generate HTML form
+      // 5. Generate HTML form
       const formHtml = this.generateForm({
         MerchantID: this.config.merchantId,
         TradeInfo: tradeInfoEncrypted,
@@ -116,16 +120,21 @@ export class NewebPayAdapter implements PaymentGateway {
         this.config.hashIV
       );
       
-      const result = JSON.parse(decrypted);
+      // Parse URL query string format
+      const params = new URLSearchParams(decrypted);
+      const result: any = {};
+      params.forEach((value, key) => {
+        result[key] = value;
+      });
 
       return {
-        transactionId: result.Result.MerchantOrderNo,
-        orderId: result.Result.MerchantOrderNo,
-        amount: parseInt(result.Result.Amt),
+        transactionId: result.MerchantOrderNo,
+        orderId: result.MerchantOrderNo,
+        amount: parseInt(result.Amt),
         status: this.mapStatus(result.Status),
-        paidAt: result.Result.PayTime ? new Date(result.Result.PayTime) : undefined,
-        gatewayTransactionId: result.Result.TradeNo,
-        paymentMethod: this.mapPaymentMethod(result.Result.PaymentType),
+        paidAt: result.PayTime ? new Date(result.PayTime) : undefined,
+        gatewayTransactionId: result.TradeNo,
+        paymentMethod: this.mapPaymentMethod(result.PaymentType),
       };
     } catch (error) {
       throw new Error(`Failed to parse NewebPay callback: ${error instanceof Error ? error.message : 'Unknown error'}`);
