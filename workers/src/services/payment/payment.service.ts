@@ -593,16 +593,19 @@ export class PaymentService {
    */
   private async validateOrder(orderId: string, amount: number): Promise<void> {
     const order = await this.db
-      .prepare('SELECT id, total FROM orders WHERE id = ?')
+      .prepare('SELECT id, total_amount FROM orders WHERE id = ?')
       .bind(orderId)
-      .first<{ id: string; total: number }>();
+      .first<{ id: string; total_amount: number }>();
 
     if (!order) {
       throw new Error('Order not found');
     }
 
-    if (order.total !== amount) {
-      throw new Error('Amount mismatch');
+    // Convert order total to cents for comparison
+    const orderAmountInCents = Math.round(order.total_amount * 100);
+    
+    if (orderAmountInCents !== amount) {
+      throw new Error(`Amount mismatch: expected ${orderAmountInCents}, got ${amount}`);
     }
   }
 

@@ -9,9 +9,7 @@ import { PaymentService } from '../services/payment/payment.service';
 import { DatabaseService } from '../services/db.service';
 import { requireAuth, getCurrentUser } from '../middleware/auth';
 import { rateLimiter } from '../middleware/rate-limiter';
-import { csrfProtection } from '../middleware/csrf';
 import { 
-  validatePaymentRequest, 
   validateRefundRequest,
   ValidationError as PaymentValidationError 
 } from '../middleware/payment-validation';
@@ -120,13 +118,15 @@ payment.post('/create', requireAuth, async (c) => {
       throw new ValidationError('Missing required fields: orderId, gateway, paymentMethod');
     }
 
-    // Validate payment request
-    validatePaymentRequest({
-      orderId,
-      gateway,
-      paymentMethod,
-      amount: 0, // Will be validated against order
-    });
+    // Validate gateway
+    if (!['newebpay', 'ecpay'].includes(gateway)) {
+      throw new ValidationError('Invalid gateway. Must be newebpay or ecpay');
+    }
+
+    // Validate payment method
+    if (!['credit_card', 'atm', 'cvs', 'barcode'].includes(paymentMethod)) {
+      throw new ValidationError('Invalid payment method');
+    }
 
     // Get database service
     const db = new DatabaseService(c.env.DB);
@@ -232,9 +232,9 @@ payment.post('/callback/:gateway', async (c) => {
  * GET /api/payment/status/:orderId
  * Query payment status for an order
  */
-payment.get('/status/:orderId', getCurrentUser, async (c) => {
+payment.get('/status/:orderId', requireAuth, async (c) => {
   try {
-    const user = c.get('user');
+    const user = getCurrentUser(c);
     if (!user) {
       throw new UnauthorizedError('Authentication required');
     }
@@ -287,9 +287,9 @@ payment.get('/status/:orderId', getCurrentUser, async (c) => {
  * POST /api/payment/refund
  * Process a refund request (admin only)
  */
-payment.post('/refund', getCurrentUser, async (c) => {
+payment.post('/refund', requireAuth, async (c) => {
   try {
-    const user = c.get('user');
+    const user = getCurrentUser(c);
     if (!user) {
       throw new UnauthorizedError('Authentication required');
     }

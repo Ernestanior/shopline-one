@@ -14,18 +14,31 @@ export interface Env {
   ALLOWED_ORIGINS: string;
   CSRF_SECRET?: string;
   
-  // Payment Gateway - NewebPay
-  NEWEBPAY_MERCHANT_ID?: string;
-  NEWEBPAY_HASH_KEY?: string;
-  NEWEBPAY_HASH_IV?: string;
-  NEWEBPAY_API_URL?: string;
+  // Payment environment
+  PAYMENT_ENVIRONMENT?: string;
+  
+  // Payment Gateway - NewebPay (Test)
+  NEWEBPAY_TEST_MERCHANT_ID?: string;
+  NEWEBPAY_TEST_HASH_KEY?: string;
+  NEWEBPAY_TEST_HASH_IV?: string;
+  
+  // Payment Gateway - NewebPay (Production)
+  NEWEBPAY_PROD_MERCHANT_ID?: string;
+  NEWEBPAY_PROD_HASH_KEY?: string;
+  NEWEBPAY_PROD_HASH_IV?: string;
+  
+  // Payment Gateway - NewebPay (Common)
   NEWEBPAY_VERSION?: string;
   
-  // Payment Gateway - ECPay
-  ECPAY_MERCHANT_ID?: string;
-  ECPAY_HASH_KEY?: string;
-  ECPAY_HASH_IV?: string;
-  ECPAY_API_URL?: string;
+  // Payment Gateway - ECPay (Test)
+  ECPAY_TEST_MERCHANT_ID?: string;
+  ECPAY_TEST_HASH_KEY?: string;
+  ECPAY_TEST_HASH_IV?: string;
+  
+  // Payment Gateway - ECPay (Production)
+  ECPAY_PROD_MERCHANT_ID?: string;
+  ECPAY_PROD_HASH_KEY?: string;
+  ECPAY_PROD_HASH_IV?: string;
   
   // Frontend URL for payment returns
   FRONTEND_URL?: string;
