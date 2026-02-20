@@ -7,7 +7,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { PaymentService } from '../services/payment/payment.service';
 import { DatabaseService } from '../services/db.service';
-import { getCurrentUser } from '../middleware/auth';
+import { requireAuth, getCurrentUser } from '../middleware/auth';
 import { rateLimiter } from '../middleware/rate-limiter';
 import { csrfProtection } from '../middleware/csrf';
 import { 
@@ -40,25 +40,38 @@ payment.use('*', rateLimiter({ maxRequests: 10, windowMs: 60000 }));
  */
 function getPaymentConfig(env: Env): PaymentConfig {
   const config: PaymentConfig = {};
+  const isProd = env.PAYMENT_ENVIRONMENT === 'production';
 
-  // Configure NewebPay if credentials are present
-  if (env.NEWEBPAY_MERCHANT_ID && env.NEWEBPAY_HASH_KEY && env.NEWEBPAY_HASH_IV) {
+  // Configure NewebPay based on environment
+  const newebpayMerchantId = isProd ? env.NEWEBPAY_PROD_MERCHANT_ID : env.NEWEBPAY_TEST_MERCHANT_ID;
+  const newebpayHashKey = isProd ? env.NEWEBPAY_PROD_HASH_KEY : env.NEWEBPAY_TEST_HASH_KEY;
+  const newebpayHashIV = isProd ? env.NEWEBPAY_PROD_HASH_IV : env.NEWEBPAY_TEST_HASH_IV;
+
+  if (newebpayMerchantId && newebpayHashKey && newebpayHashIV) {
     config.newebpay = {
-      merchantId: env.NEWEBPAY_MERCHANT_ID,
-      hashKey: env.NEWEBPAY_HASH_KEY,
-      hashIV: env.NEWEBPAY_HASH_IV,
-      apiUrl: env.NEWEBPAY_API_URL || 'https://ccore.newebpay.com/MPG/mpg_gateway',
+      merchantId: newebpayMerchantId,
+      hashKey: newebpayHashKey,
+      hashIV: newebpayHashIV,
+      apiUrl: isProd 
+        ? 'https://core.newebpay.com/MPG/mpg_gateway'
+        : 'https://ccore.newebpay.com/MPG/mpg_gateway',
       version: env.NEWEBPAY_VERSION || '2.0',
     };
   }
 
-  // Configure ECPay if credentials are present
-  if (env.ECPAY_MERCHANT_ID && env.ECPAY_HASH_KEY && env.ECPAY_HASH_IV) {
+  // Configure ECPay based on environment
+  const ecpayMerchantId = isProd ? env.ECPAY_PROD_MERCHANT_ID : env.ECPAY_TEST_MERCHANT_ID;
+  const ecpayHashKey = isProd ? env.ECPAY_PROD_HASH_KEY : env.ECPAY_TEST_HASH_KEY;
+  const ecpayHashIV = isProd ? env.ECPAY_PROD_HASH_IV : env.ECPAY_TEST_HASH_IV;
+
+  if (ecpayMerchantId && ecpayHashKey && ecpayHashIV) {
     config.ecpay = {
-      merchantId: env.ECPAY_MERCHANT_ID,
-      hashKey: env.ECPAY_HASH_KEY,
-      hashIV: env.ECPAY_HASH_IV,
-      apiUrl: env.ECPAY_API_URL || 'https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5',
+      merchantId: ecpayMerchantId,
+      hashKey: ecpayHashKey,
+      hashIV: ecpayHashIV,
+      apiUrl: isProd
+        ? 'https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5'
+        : 'https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5',
     };
   }
 
@@ -91,9 +104,9 @@ async function getOrder(db: DatabaseService, orderId: string, userId?: number) {
  * POST /api/payment/create
  * Create a payment request and return payment form HTML
  */
-payment.post('/create', getCurrentUser, async (c) => {
+payment.post('/create', requireAuth, async (c) => {
   try {
-    const user = c.get('user');
+    const user = getCurrentUser(c);
     if (!user) {
       throw new UnauthorizedError('Authentication required');
     }
