@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { apiFetch } from '../lib/api';
 import PaymentMethodSelector from '../components/PaymentMethodSelector';
 import Reveal from '../components/Reveal';
@@ -24,6 +25,7 @@ export default function CheckoutPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
   
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ export default function CheckoutPage() {
 
   const loadOrder = async () => {
     if (!orderId) {
-      setError('订单ID缺失');
+      setError(t('common.error'));
       setLoading(false);
       return;
     }
@@ -49,20 +51,20 @@ export default function CheckoutPage() {
       const data = await apiFetch<{ order: Order }>(`/api/orders/${orderId}`);
       
       if (!data.order) {
-        setError('订单不存在');
+        setError(t('common.error'));
         return;
       }
 
       // Check if order is already paid
       if (data.order.status === 'paid') {
-        setError('此订单已支付');
+        setError(t('order.status.paid'));
         return;
       }
 
       setOrder(data.order);
     } catch (err: any) {
       console.error('Failed to load order:', err);
-      setError(err.message || '加载订单失败');
+      setError(err.message || t('common.error'));
     } finally {
       setLoading(false);
     }
@@ -75,7 +77,7 @@ export default function CheckoutPage() {
 
   const handleSubmitPayment = async () => {
     if (!order || !selectedGateway || !selectedMethod) {
-      setError('请选择支付方式');
+      setError(t('checkout.selectPayment'));
       return;
     }
 
@@ -97,7 +99,7 @@ export default function CheckoutPage() {
       });
 
       if (!response.success) {
-        setError(response.error || '创建支付失败');
+        setError(response.error || t('common.error'));
         return;
       }
 
@@ -114,11 +116,11 @@ export default function CheckoutPage() {
           form.submit();
         }
       } else {
-        setError('未收到支付表单');
+        setError(t('common.error'));
       }
     } catch (err: any) {
       console.error('Payment creation error:', err);
-      setError(err.message || '创建支付失败，请稍后重试');
+      setError(err.message || t('common.error'));
     } finally {
       setProcessing(false);
     }
@@ -130,7 +132,7 @@ export default function CheckoutPage() {
         <div className="container">
           <div className="loading-state">
             <div className="spinner"></div>
-            <p>加载订单信息...</p>
+            <p>{t('common.loading')}</p>
           </div>
         </div>
       </div>
@@ -143,10 +145,10 @@ export default function CheckoutPage() {
         <div className="container">
           <Reveal>
             <div className="error-state">
-              <h2>无法加载订单</h2>
+              <h2>{t('common.error')}</h2>
               <p>{error}</p>
               <Link to="/cart" className="btn-primary">
-                返回购物车
+                {t('checkout.backToCart')}
               </Link>
             </div>
           </Reveal>
@@ -167,8 +169,8 @@ export default function CheckoutPage() {
       <div className="container">
         <Reveal>
           <div className="checkout-header">
-            <h1>订单支付</h1>
-            <p className="order-number">订单编号: {order.orderNumber}</p>
+            <h1>{t('checkout.title')}</h1>
+            <p className="order-number">{t('account.orderNumber')}: {order.orderNumber}</p>
           </div>
         </Reveal>
 
@@ -184,7 +186,7 @@ export default function CheckoutPage() {
           <div className="checkout-main">
             <Reveal>
               <section className="checkout-section">
-                <h2>订单摘要</h2>
+                <h2>{t('checkout.orderSummary')}</h2>
                 <div className="order-items">
                   {order.items.map((item) => (
                     <div key={item.id} className="order-item">
@@ -226,7 +228,7 @@ export default function CheckoutPage() {
                   onClick={() => navigate('/cart')}
                   disabled={processing}
                 >
-                  返回购物车
+                  {t('checkout.backToCart')}
                 </button>
                 <button
                   type="button"
@@ -234,7 +236,7 @@ export default function CheckoutPage() {
                   onClick={handleSubmitPayment}
                   disabled={!selectedGateway || !selectedMethod || processing}
                 >
-                  {processing ? '处理中...' : '前往支付'}
+                  {processing ? t('checkout.processing') : t('checkout.proceedToPayment')}
                 </button>
               </div>
             </Reveal>
@@ -243,22 +245,22 @@ export default function CheckoutPage() {
           <aside className="checkout-sidebar">
             <Reveal>
               <div className="order-summary">
-                <h3>金额明细</h3>
+                <h3>{t('checkout.amountDetails')}</h3>
                 <div className="summary-row">
-                  <span>小计 ({totalItems} 件商品)</span>
+                  <span>{t('cart.subtotal')} ({totalItems} {t('cart.items')})</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
-                  <span>运费</span>
-                  <span>待计算</span>
+                  <span>{t('checkout.shipping')}</span>
+                  <span>{t('checkout.toBeCalculated')}</span>
                 </div>
                 <div className="summary-divider" />
                 <div className="summary-row total">
-                  <span>总计</span>
+                  <span>{t('cart.total')}</span>
                   <span>${order.totalAmount.toFixed(2)}</span>
                 </div>
                 <div className="summary-note">
-                  支付完成后，您将收到订单确认邮件
+                  {t('checkout.confirmationNote')}
                 </div>
               </div>
             </Reveal>

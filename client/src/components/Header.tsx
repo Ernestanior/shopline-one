@@ -26,10 +26,10 @@ const Header: React.FC = () => {
 
   const staticLinks = useMemo(
     () => [
-      { name: 'About', path: '/about' },
-      { name: 'Contact', path: '/contact' }
+      { name: t('nav.about'), path: '/about' },
+      { name: t('nav.contact'), path: '/contact' }
     ],
-    []
+    [t]
   );
 
   const megaLinks = useMemo(() => {
@@ -420,16 +420,16 @@ const Header: React.FC = () => {
                       setIsMenuOpen(false);
                     }}
                   >
-                    Logout
+                    {t('nav.logout')}
                   </button>
                 </div>
               ) : (
                 <div className="auth-links">
                   <Link to="/login" className="login-btn" onClick={() => setIsMenuOpen(false)}>
-                    Login
+                    {t('nav.login')}
                   </Link>
                   <Link to="/register" className="login-btn login-btn--ghost" onClick={() => setIsMenuOpen(false)}>
-                    Register
+                    {t('auth.register')}
                   </Link>
                 </div>
               )}

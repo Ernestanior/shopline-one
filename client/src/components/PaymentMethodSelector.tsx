@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 import './PaymentMethodSelector.css';
 
 export interface PaymentMethodSelectorProps {
@@ -17,31 +18,32 @@ interface PaymentMethodOption {
   description?: string;
 }
 
-const GATEWAYS: Gateway[] = [
-  {
-    id: 'newebpay',
-    name: '蓝新金流 (NewebPay)',
-    methods: [
-      { id: 'credit_card', name: '信用卡', description: '支持 Visa、Mastercard、JCB' },
-      { id: 'atm', name: 'ATM 转账', description: '虚拟账号转账，3天内完成' },
-      { id: 'cvs', name: '超商代码', description: '7-11、全家、莱尔富' }
-    ]
-  },
-  {
-    id: 'ecpay',
-    name: '绿界科技 (ECPay)',
-    methods: [
-      { id: 'credit_card', name: '信用卡', description: '支持 Visa、Mastercard、JCB' },
-      { id: 'atm', name: 'ATM 转账', description: '虚拟账号转账，3天内完成' },
-      { id: 'cvs', name: '超商代码', description: '7-11、全家、莱尔富、OK' },
-      { id: 'barcode', name: '超商条码', description: '超商扫码支付' }
-    ]
-  }
-];
-
 export function PaymentMethodSelector({ onSelect }: PaymentMethodSelectorProps) {
+  const { t } = useLanguage();
   const [selectedGateway, setSelectedGateway] = useState<string>('');
   const [selectedMethod, setSelectedMethod] = useState<string>('');
+
+  const GATEWAYS: Gateway[] = [
+    {
+      id: 'newebpay',
+      name: t('payment.newebpay'),
+      methods: [
+        { id: 'credit_card', name: t('payment.creditCard'), description: t('payment.creditCard.desc') },
+        { id: 'atm', name: t('payment.atm'), description: t('payment.atm.desc') },
+        { id: 'cvs', name: t('payment.cvs'), description: t('payment.cvs.desc') }
+      ]
+    },
+    {
+      id: 'ecpay',
+      name: t('payment.ecpay'),
+      methods: [
+        { id: 'credit_card', name: t('payment.creditCard'), description: t('payment.creditCard.desc') },
+        { id: 'atm', name: t('payment.atm'), description: t('payment.atm.desc') },
+        { id: 'cvs', name: t('payment.cvs'), description: t('payment.cvs.desc') },
+        { id: 'barcode', name: t('payment.barcode'), description: t('payment.barcode.desc') }
+      ]
+    }
+  ];
 
   const handleGatewayChange = (gatewayId: string) => {
     setSelectedGateway(gatewayId);
@@ -55,7 +57,7 @@ export function PaymentMethodSelector({ onSelect }: PaymentMethodSelectorProps) 
 
   return (
     <div className="payment-method-selector">
-      <h3>选择支付方式</h3>
+      <h3>{t('checkout.selectPayment')}</h3>
       
       <div className="gateway-list">
         {GATEWAYS.map((gateway) => (
@@ -109,7 +111,7 @@ export function PaymentMethodSelector({ onSelect }: PaymentMethodSelectorProps) 
 
       {selectedGateway && !selectedMethod && (
         <div className="payment-hint">
-          请选择一个支付方式以继续
+          {t('checkout.selectPayment')}
         </div>
       )}
     </div>
