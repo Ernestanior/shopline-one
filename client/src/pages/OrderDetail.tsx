@@ -183,29 +183,9 @@ const OrderDetail: React.FC = () => {
                 {order.payment_status === 'unpaid' && (
                   <button 
                     className="btn-primary"
-                    onClick={async () => {
-                      const confirmed = await showConfirm({
-                        title: '确认支付',
-                        message: '确认支付此订单？',
-                        type: 'info',
-                        confirmText: '确认支付',
-                        cancelText: '取消'
-                      });
-
-                      if (confirmed) {
-                        try {
-                          await apiFetch(`/api/user/orders/${order.id}/payment`, {
-                            method: 'PATCH'
-                          });
-                          showToast({ message: '支付成功！', type: 'success' });
-                          setTimeout(() => window.location.reload(), 1000);
-                        } catch (error) {
-                          showToast({ 
-                            message: `支付失败: ${error instanceof Error ? error.message : '请稍后重试'}`, 
-                            type: 'error' 
-                          });
-                        }
-                      }
+                    onClick={() => {
+                      // 跳转到支付页面，传递订单 ID
+                      navigate(`/checkout/payment/${order.id}`);
                     }}
                   >
                     立即支付

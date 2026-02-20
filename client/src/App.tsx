@@ -44,6 +44,7 @@ function AnimatedRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/checkout/:orderId" element={<CheckoutPage />} />
+        <Route path="/checkout/payment/:orderId" element={<CheckoutPage />} />
         <Route path="/payment/return/:orderId" element={<PaymentReturnPage />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/transactions" element={<TransactionsPage />} />

@@ -139,7 +139,7 @@ payment.post('/create', getCurrentUser, async (c) => {
     // Create payment
     const response = await paymentService.createPayment(gateway, {
       orderId: order.id,
-      amount: Math.round(order.total * 100), // Convert to cents
+      amount: Math.round(order.total_amount * 100), // Convert to cents
       currency: 'TWD',
       description: `Order ${order.id}`,
       buyerEmail: user.email,
