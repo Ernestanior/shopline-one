@@ -46,10 +46,14 @@ const Home: React.FC = () => {
           apiFetch<Category[]>('/api/categories')
         ]);
 
-        setProducts(productsData);
-        setCategories(categoriesData);
+        // Ensure we have arrays
+        setProducts(Array.isArray(productsData) ? productsData : []);
+        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Keep empty arrays on error
+        setProducts([]);
+        setCategories([]);
       } finally {
         setLoading(false);
       }

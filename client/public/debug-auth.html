@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auth Debug</title>
+  <style>
+    body { font-family: monospace; padding: 20px; }
+    .section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+    button { margin: 5px; padding: 10px; }
+    pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Authentication Debug Tool</h1>
+  
+  <div class="section">
+    <h2>1. Check localStorage</h2>
+    <button onclick="checkLocalStorage()">Check Token</button>
+    <pre id="localStorage-result"></pre>
+  </div>
+
+  <div class="section">
+    <h2>2. Test Login</h2>
+    <input type="email" id="email" placeholder="Email" value="test@example.com" />
+    <input type="password" id="password" placeholder="Password" value="password12345678" />
+    <button onclick="testLogin()">Login</button>
+    <pre id="login-result"></pre>
+  </div>
+
+  <div class="section">
+    <h2>3. Test /api/auth/me</h2>
+    <button onclick="testMe()">Test Me Endpoint</button>
+    <pre id="me-result"></pre>
+  </div>
+
+  <div class="section">
+    <h2>4. Test with Manual Token</h2>
+    <input type="text" id="manual-token" placeholder="Paste token here" style="width: 500px" />
+    <button onclick="testWithManualToken()">Test</button>
+    <pre id="manual-result"></pre>
+  </div>
+
+  <script>
+    const API_URL = 'https://ecommerce-api.xyvn.workers.dev';
+
+    function checkLocalStorage() {
+      const token = localStorage.getItem('auth_token');
+      document.getElementById('localStorage-result').textContent = 
+        token ? `Token found: ${token.substring(0, 50)}...` : 'No token found';
+    }
+
+    async function testLogin() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      try {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        document.getElementById('login-result').textContent = 
+          JSON.stringify(data, null, 2);
+        
+        if (data.token) {
+          localStorage.setItem('auth_token', data.token);
+          alert('Token saved to localStorage!');
+        }
+      } catch (err) {
+        document.getElementById('login-result').textContent = 
+          'Error: ' + err.message;
+      }
+    }
+
+    async function testMe() {
+      const token = localStorage.getItem('auth_token');
+      
+      try {
+        const response = await fetch(`${API_URL}/api/auth/me`, {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        document.getElementById('me-result').textContent = 
+          `Status: ${response.status}\n` + JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('me-result').textContent = 
+          'Error: ' + err.message;
+      }
+    }
+
+    async function testWithManualToken() {
+      const token = document.getElementById('manual-token').value;
+      
+      try {
+        const response = await fetch(`${API_URL}/api/auth/me`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        document.getElementById('manual-result').textContent = 
+          `Status: ${response.status}\n` + JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('manual-result').textContent = 
+          'Error: ' + err.message;
+      }
+    }
+
+    // Auto-check on load
+    checkLocalStorage();
+  </script>
+</body>
+</html>

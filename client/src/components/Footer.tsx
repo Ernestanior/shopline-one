@@ -70,45 +70,23 @@ const Footer: React.FC = () => {
             <ul>
               <li><a href="/about">About Us</a></li>
               <li><a href="/contact">Contact</a></li>
-              <li><a href="/policies">Policies</a></li>
-              <li><a href="/manual">Online Manual</a></li>
             </ul>
           </div>
 
           <div className="footer-column">
             <h4>Follow Us</h4>
             <div className="social-links">
-              <a href="https://www.facebook.com/xyvn" target="_blank" rel="noopener noreferrer">Facebook (ARVIX)</a>
-              <a href="https://x.com/xyvn" target="_blank" rel="noopener noreferrer">X (ARVIX)</a>
-              <a href="https://www.instagram.com/xyvn/" target="_blank" rel="noopener noreferrer">Instagram (ARVIX)</a>
-              <a href="https://www.youtube.com/@ARVIX" target="_blank" rel="noopener noreferrer">YouTube (ARVIX)</a>
+              <a href="https://www.instagram.com/arvix3114?igsh=eXQ0aDYwaTk3OHVx&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram (ARVIX)</a>
             </div>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <div className="payment-methods">
-            <span>Payment methods:</span>
-            <div className="payment-icons">
-              <span>American Express</span>
-              <span>Apple Pay</span>
-              <span>Diners Club</span>
-              <span>Discover</span>
-              <span>Google Pay</span>
-              <span>JCB</span>
-              <span>Mastercard</span>
-              <span>PayPal</span>
-              <span>Visa</span>
-            </div>
-          </div>
-          
           <div className="legal-links">
             <a href="/policies/privacy-policy">Privacy policy</a>
             <a href="/policies/terms-of-service">Terms of service</a>
             <a href="/policies/refund-policy">Refund policy</a>
           </div>
-          
-          <p className="powered-by">Powered by Shopify Clone</p>
         </div>
       </div>
     </footer>

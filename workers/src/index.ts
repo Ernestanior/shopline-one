@@ -40,7 +40,7 @@ app.use('*', async (c, next) => {
     );
   }
   
-  // Always allow the origin if present
+  // Set CORS headers before processing
   if (origin) {
     c.header('Access-Control-Allow-Origin', origin);
   } else {
@@ -56,23 +56,37 @@ app.use('*', async (c, next) => {
   
   await next();
   
-  // Set again after processing
+  // Set again after processing to ensure they're not removed
   if (origin) {
     c.header('Access-Control-Allow-Origin', origin);
+  } else {
+    c.header('Access-Control-Allow-Origin', '*');
   }
   c.header('Access-Control-Allow-Credentials', 'true');
+  c.header('Vary', 'Origin');
 });
 
 // Handle OPTIONS requests early - must return proper CORS headers
 app.options('*', async (c) => {
-  // CORS headers are already set by createCorsMiddleware
-  // Just return 204
-  return c.text('', 204);
+  const origin = c.req.header('origin') || '*';
+  
+  // Return a new Response with explicit headers
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Expose-Headers': 'Content-Length, X-Request-Id',
+      'Access-Control-Max-Age': '86400',
+      'Vary': 'Origin'
+    }
+  });
 });
 
-// Disable all middleware for debugging
-// app.use('*', corsCheck);
-// app.use('*', authMiddleware);
+// Apply auth middleware globally to parse tokens
+app.use('*', authMiddleware);
 
 // Health check
 app.get('/', (c) => {
