@@ -19,6 +19,7 @@ import PaymentReturnPage from './pages/PaymentReturnPage';
 import TransactionsPage from './pages/admin/TransactionsPage';
 import Admin from './pages/Admin';
 import { AuthProvider } from './auth/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import RequireAuth from './auth/RequireAuth';
 import './App.css';
@@ -72,17 +73,19 @@ function AnimatedRoutes() {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <NotificationProvider>
-          <div className="App">
-            <Header />
-            <main>
+      <LanguageProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            <div className="App">
+              <Header />
+              <main>
               <AnimatedRoutes />
             </main>
             <Footer />
           </div>
         </NotificationProvider>
       </AuthProvider>
+      </LanguageProvider>
     </Router>
   );
 }

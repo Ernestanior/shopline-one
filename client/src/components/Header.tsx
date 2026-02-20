@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Search from './Search';
 import { useAuth } from '../auth/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { apiFetch } from '../lib/api';
 import './Header.css';
 
@@ -13,6 +14,7 @@ interface Category {
 
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -389,6 +391,15 @@ const Header: React.FC = () => {
                   <circle cx="11" cy="11" r="8"></circle>
                   <path d="m21 21-4.35-4.35"></path>
                 </svg>
+              </button>
+
+              <button
+                className="language-btn"
+                onClick={() => setLanguage(language === 'zh-TW' ? 'en' : 'zh-TW')}
+                aria-label="Switch language"
+                title={language === 'zh-TW' ? 'Switch to English' : '切換到繁體中文'}
+              >
+                {language === 'zh-TW' ? 'EN' : '繁'}
               </button>
 
               {user ? (
