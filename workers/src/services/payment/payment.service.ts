@@ -76,18 +76,9 @@ export class PaymentService {
       // 2. Validate order amount
       await this.validateOrder(params.orderId, params.amount);
 
-      // 3. Check concurrent pending payment limit (Requirement 13.5)
-      const pendingCount = await this.countPendingTransactions(params.orderId);
-      const MAX_CONCURRENT_PENDING = 3; // Limit to 3 concurrent pending payments
-      
-      if (pendingCount >= MAX_CONCURRENT_PENDING) {
-        this.logger.warn('Concurrent pending payment limit exceeded', {
-          orderId: params.orderId,
-          pendingCount,
-          maxAllowed: MAX_CONCURRENT_PENDING,
-        });
-        throw new Error(`Maximum concurrent pending payments (${MAX_CONCURRENT_PENDING}) exceeded for this order`);
-      }
+      // 3. Cancel any existing pending/processing transactions for this order
+      // This allows users to retry payment if they abandoned the previous attempt
+      await this.cancelPendingTransactionsForRetry(params.orderId);
 
       // 4. Calculate expiration time based on payment method
       const expiredAt = this.calculateExpirationTime(params.paymentMethod);
@@ -108,7 +99,6 @@ export class PaymentService {
       this.logger.info('Transaction record created for payment attempt', {
         orderId: params.orderId,
         transactionId,
-        attemptNumber: pendingCount + 1,
       });
 
       // 6. Call gateway to create payment
@@ -566,6 +556,39 @@ export class PaymentService {
       this.logger.info('Cancelled other pending transactions', {
         orderId,
         successfulTransactionId,
+        cancelledCount: pendingTransactions.length,
+      });
+    }
+  }
+
+  /**
+   * Cancel pending transactions for payment retry
+   * Allows users to retry payment if they abandoned the previous attempt
+   */
+  private async cancelPendingTransactionsForRetry(orderId: string): Promise<void> {
+    const transactions = await this.getAllTransactionsByOrderId(orderId);
+    
+    const pendingTransactions = transactions.filter(
+      (t: PaymentTransaction) => 
+        t.status === PaymentStatus.PENDING || t.status === PaymentStatus.PROCESSING
+    );
+
+    // Cancel each pending transaction
+    for (const transaction of pendingTransactions) {
+      await this.updateTransaction(transaction.id, {
+        status: PaymentStatus.CANCELLED,
+      });
+      
+      this.logger.info('Cancelled pending transaction for retry', {
+        transactionId: transaction.id,
+        orderId,
+        reason: 'User initiated new payment attempt',
+      });
+    }
+
+    if (pendingTransactions.length > 0) {
+      this.logger.info('Cancelled pending transactions for retry', {
+        orderId,
         cancelledCount: pendingTransactions.length,
       });
     }
