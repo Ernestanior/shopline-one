@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { apiFetch } from '../lib/api';
 import Reveal from '../components/Reveal';
 import './Cart.css';
@@ -16,6 +17,7 @@ interface CartItem {
 const Cart: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -93,7 +95,7 @@ const Cart: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   return (
@@ -101,9 +103,9 @@ const Cart: React.FC = () => {
       <div className="container">
         <Reveal>
           <div className="cart-header">
-            <h1>Shopping Cart</h1>
+            <h1>{t('cart.title')}</h1>
             <Link to="/" className="continue-shopping">
-              ← Continue Shopping
+              ← {t('cart.continueShopping')}
             </Link>
           </div>
         </Reveal>
@@ -118,10 +120,10 @@ const Cart: React.FC = () => {
                   <path d="M9 22V12h6v10"></path>
                 </svg>
               </div>
-              <h2>Your cart is currently empty</h2>
-              <p>Not sure where to start? Check out our beloved products</p>
+              <h2>{t('cart.empty')}</h2>
+              <p>{t('home.hero.subtitle')}</p>
               <Link to="/collections/productivity" className="btn-shop-now">
-                Start Shopping
+                {t('home.hero.cta')}
               </Link>
             </div>
           </Reveal>
@@ -187,15 +189,15 @@ const Cart: React.FC = () => {
             <Reveal>
               <div className="cart-summary">
                 <div className="summary-content">
-                  <h3>Order Summary</h3>
+                  <h3>{t('checkout.orderSummary')}</h3>
                   
                   <div className="summary-row">
-                    <span>Subtotal ({getTotalItems()} items)</span>
+                    <span>{t('cart.subtotal')} ({getTotalItems()} {t('cart.items')})</span>
                     <span>${getTotalPrice().toFixed(2)}</span>
                   </div>
                   
                   <div className="summary-row">
-                    <span>Shipping</span>
+                    <span>{t('checkout.shipping')}</span>
                     <span>{getShipping() === 0 ? 'Free' : `$${getShipping().toFixed(2)}`}</span>
                   </div>
 
@@ -213,7 +215,7 @@ const Cart: React.FC = () => {
                   )}
                   
                   <div className="summary-row total">
-                    <span>Total</span>
+                    <span>{t('cart.total')}</span>
                     <span>${getGrandTotal().toFixed(2)}</span>
                   </div>
 
@@ -239,7 +241,7 @@ const Cart: React.FC = () => {
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                       <path d="M9 12l2 2 4-4"></path>
                     </svg>
-                    Secure checkout
+                    {t('cart.checkout')}
                   </button>
 
                   <div className="checkout-microcopy">
