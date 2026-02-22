@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal';
 import { apiFetch } from '../lib/api';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Home.css';
 
 interface Product {
@@ -22,6 +23,7 @@ interface Category {
 }
 
 const Home: React.FC = () => {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -175,18 +177,18 @@ const Home: React.FC = () => {
         <div className="container hero-container">
           <div className="hero-grid">
             <Reveal className="hero-copy">
-              <div className="hero-kicker">Designed for daily rituals</div>
-              <h1>ARVIX</h1>
+              <div className="hero-kicker">{t('home.hero.kicker')}</div>
+              <h1>{t('home.hero.title')}</h1>
               <p>
-                Minimal tools that turn routine moments into calm, tactile experiences—built for focus, carry, and home.
+                {t('home.hero.subtitle')}
               </p>
 
               <div className="hero-cta">
                 <Link to="/collections/productivity" className="btn-primary">
-                  Shop Productivity
+                  {t('home.hero.cta')}
                 </Link>
                 <Link to="/collections/mobility" className="btn-secondary">
-                  Explore Carry
+                  {t('home.hero.ctaSecondary')}
                 </Link>
               </div>
 
@@ -194,22 +196,22 @@ const Home: React.FC = () => {
                 <div className="trust-item">
                   <div className="trust-icon">🚚</div>
                   <div className="trust-content">
-                    <div className="trust-value">2–3 days</div>
-                    <div className="trust-label">Domestic shipping</div>
+                    <div className="trust-value">{t('home.hero.shippingDays')}</div>
+                    <div className="trust-label">{t('home.hero.shipping')}</div>
                   </div>
                 </div>
                 <div className="trust-item">
                   <div className="trust-icon">↩️</div>
                   <div className="trust-content">
-                    <div className="trust-value">30 days</div>
-                    <div className="trust-label">Easy returns</div>
+                    <div className="trust-value">{t('home.hero.returnsDays')}</div>
+                    <div className="trust-label">{t('home.hero.returns')}</div>
                   </div>
                 </div>
                 <div className="trust-item">
                   <div className="trust-icon">🔒</div>
                   <div className="trust-content">
-                    <div className="trust-value">Secure</div>
-                    <div className="trust-label">Checkout & privacy</div>
+                    <div className="trust-value">{t('home.hero.secure')}</div>
+                    <div className="trust-label">{t('home.hero.secureText')}</div>
                   </div>
                 </div>
               </div>
@@ -290,8 +292,8 @@ const Home: React.FC = () => {
         <div className="container" >
           <Reveal>
             <div className="section-header">
-              <h2>Explore Collections</h2>
-              <p className="section-subtitle">Curated tools for every aspect of your daily life</p>
+              <h2>{t('home.collections.title')}</h2>
+              <p className="section-subtitle">{t('home.collections.subtitle')}</p>
             </div>
           </Reveal>
 
@@ -328,8 +330,8 @@ const Home: React.FC = () => {
         <div className="container">
           <Reveal>
             <div className="section-header">
-              <h2>All Categories</h2>
-              <p className="section-subtitle">Find exactly what you need</p>
+              <h2>{t('home.categories.title')}</h2>
+              <p className="section-subtitle">{t('home.categories.subtitle')}</p>
             </div>
           </Reveal>
           <div className="category-grid">
@@ -354,7 +356,7 @@ const Home: React.FC = () => {
                   <div className="category-content">
                     <h3>{category.name}</h3>
                     <p>{category.description}</p>
-                    <span className="category-cta">Shop Now →</span>
+                    <span className="category-cta">{t('home.categories.shopNow')}</span>
                   </div>
                 </Link>
               </Reveal>
@@ -368,8 +370,8 @@ const Home: React.FC = () => {
         <div className="container">
           <Reveal>
             <div className="section-header">
-              <h2>Featured Products</h2>
-              <p className="section-subtitle">Handpicked essentials for your everyday</p>
+              <h2>{t('home.featured.title')}</h2>
+              <p className="section-subtitle">{t('home.featured.subtitle')}</p>
             </div>
           </Reveal>
           <div className="products-grid">
@@ -387,7 +389,7 @@ const Home: React.FC = () => {
                       }}
                     />
                     {product.status === 'coming-soon' && (
-                      <div className="coming-soon-badge">Coming Soon</div>
+                      <div className="coming-soon-badge">{t('product.comingSoon')}</div>
                     )}
                   </div>
                   <div className="product-info">
@@ -396,9 +398,9 @@ const Home: React.FC = () => {
                     <div className="product-footer">
                       <span className="price">${product.price}</span>
                       {product.status === 'available' ? (
-                        <span className="btn-view-details">View Details</span>
+                        <span className="btn-view-details">{t('product.viewDetails')}</span>
                       ) : (
-                        <span className="coming-soon-text">Coming Soon</span>
+                        <span className="coming-soon-text">{t('product.comingSoon')}</span>
                       )}
                     </div>
                   </div>
@@ -412,30 +414,30 @@ const Home: React.FC = () => {
       <section className="value-props">
         <div className="container">
           <Reveal>
-            <h2>Built for the details</h2>
-            <p className="section-subtitle">Premium materials, quiet design, and thoughtful utility—without the noise.</p>
+            <h2>{t('home.value.title')}</h2>
+            <p className="section-subtitle">{t('home.value.subtitle')}</p>
           </Reveal>
 
           <div className="value-grid">
             <Reveal delayMs={60}>
               <div className="value-card">
                 <div className="value-icon">✨</div>
-                <div className="value-title">Material-first</div>
-                <div className="value-text">Clean finishes, durable builds, and a tactile feel you'll notice every day.</div>
+                <div className="value-title">{t('home.value.material')}</div>
+                <div className="value-text">{t('home.value.materialDesc')}</div>
               </div>
             </Reveal>
             <Reveal delayMs={120}>
               <div className="value-card">
                 <div className="value-icon">🎒</div>
-                <div className="value-title">Made to carry</div>
-                <div className="value-text">Slim profiles and purposeful form factors—easy to take, easy to keep.</div>
+                <div className="value-title">{t('home.value.carry')}</div>
+                <div className="value-text">{t('home.value.carryDesc')}</div>
               </div>
             </Reveal>
             <Reveal delayMs={180}>
               <div className="value-card">
                 <div className="value-icon">♾️</div>
-                <div className="value-title">Designed to last</div>
-                <div className="value-text">Timeless aesthetics with long-term usability. Less clutter, more calm.</div>
+                <div className="value-title">{t('home.value.lasting')}</div>
+                <div className="value-text">{t('home.value.lastingDesc')}</div>
               </div>
             </Reveal>
           </div>
@@ -445,8 +447,8 @@ const Home: React.FC = () => {
       <section className="testimonials">
         <div className="container">
           <Reveal>
-            <h2>What customers say</h2>
-            <p className="section-subtitle">A few notes from people who value calm, function, and craft.</p>
+            <h2>{t('home.testimonials.title')}</h2>
+            <p className="section-subtitle">{t('home.testimonials.subtitle')}</p>
           </Reveal>
 
           <div className="testimonial-grid">
