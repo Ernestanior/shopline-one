@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { apiFetch } from '../lib/api';
 import AddressModal from '../components/AddressModal';
 import PaymentMethodModal from '../components/PaymentMethodModal';
@@ -9,6 +10,7 @@ import './Account.css';
 
 const Account: React.FC = () => {
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
@@ -193,22 +195,22 @@ const Account: React.FC = () => {
   };
 
   const getStatusText = (status: string) => {
-    const texts: Record<string, string> = {
-      pending: '待处理',
-      processing: '处理中',
-      shipped: '已发货',
-      completed: '已完成',
-      cancelled: '已取消'
+    const statusMap: Record<string, string> = {
+      pending: 'order.status.pending',
+      processing: 'order.status.processing',
+      shipped: 'order.status.shipped',
+      completed: 'order.status.delivered',
+      cancelled: 'order.status.cancelled'
     };
-    return texts[status] || status;
+    return t(statusMap[status] || status);
   };
 
   return (
     <div className="account">
       <div className="container">
         <div className="account-header">
-          <h1>我的账户</h1>
-          <button onClick={logout} className="btn-logout">退出登录</button>
+          <h1>{t('account.title')}</h1>
+          <button onClick={logout} className="btn-logout">{t('nav.logout')}</button>
         </div>
 
         <div className="account-tabs">
@@ -216,46 +218,46 @@ const Account: React.FC = () => {
             className={activeTab === 'profile' ? 'active' : ''}
             onClick={() => setActiveTab('profile')}
           >
-            个人信息
+            {t('account.profile')}
           </button>
           <button
             className={activeTab === 'orders' ? 'active' : ''}
             onClick={() => setActiveTab('orders')}
           >
-            订单历史
+            {t('account.orderHistory')}
           </button>
           <button
             className={activeTab === 'addresses' ? 'active' : ''}
             onClick={() => setActiveTab('addresses')}
           >
-            收货地址
+            {t('account.addresses')}
           </button>
           <button
             className={activeTab === 'payments' ? 'active' : ''}
             onClick={() => setActiveTab('payments')}
           >
-            支付方式
+            {t('footer.support')}
           </button>
         </div>
 
         <div className="account-content">
           {activeTab === 'profile' && (
             <div className="account-card">
-              <h2>账户信息</h2>
+              <h2>{t('account.profile')}</h2>
               <div className="account-info">
                 <div className="info-row">
-                  <span className="info-label">邮箱地址</span>
+                  <span className="info-label">{t('auth.email')}</span>
                   <span className="info-value">{user?.email}</span>
                 </div>
                 <div className="info-row">
-                  <span className="info-label">账户类型</span>
+                  <span className="info-label">{t('account.title')}</span>
                   <span className="info-value">
-                    {user?.is_admin ? '管理员' : '普通用户'}
+                    {user?.is_admin ? t('nav.admin') : t('account.title')}
                   </span>
                 </div>
                 <div className="info-row">
-                  <span className="info-label">账户状态</span>
-                  <span className="info-value status-active">活跃</span>
+                  <span className="info-label">{t('account.status')}</span>
+                  <span className="info-value status-active">{t('order.status.processing')}</span>
                 </div>
               </div>
 
@@ -264,8 +266,8 @@ const Account: React.FC = () => {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                   </svg>
-                  <span>您拥有管理员权限</span>
-                  <Link to="/admin" className="btn-admin">进入管理后台</Link>
+                  <span>{t('account.welcome')}</span>
+                  <Link to="/admin" className="btn-admin">{t('nav.admin')}</Link>
                 </div>
               )}
             </div>
@@ -273,10 +275,10 @@ const Account: React.FC = () => {
 
           {activeTab === 'orders' && (
             <div className="orders-section">
-              <h2>订单历史</h2>
+              <h2>{t('account.orderHistory')}</h2>
               
               {loading ? (
-                <div className="loading-state">加载中...</div>
+                <div className="loading-state">{t('common.loading')}</div>
               ) : orders.length === 0 ? (
                 <div className="empty-state">
                   <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -284,9 +286,9 @@ const Account: React.FC = () => {
                     <line x1="3" y1="9" x2="21" y2="9"></line>
                     <path d="M9 22V12h6v10"></path>
                   </svg>
-                  <h3>暂无订单</h3>
-                  <p>您还没有下过订单</p>
-                  <Link to="/collections/productivity" className="btn-shop">开始购物</Link>
+                  <h3>{t('account.noOrders')}</h3>
+                  <p>{t('account.noOrders')}</p>
+                  <Link to="/collections/productivity" className="btn-shop">{t('account.startShopping')}</Link>
                 </div>
               ) : (
                 <div className="orders-list">
@@ -294,7 +296,7 @@ const Account: React.FC = () => {
                     <div key={order.id} className="order-card">
                       <div className="order-header">
                         <div className="order-number">
-                          <span className="label">订单号</span>
+                          <span className="label">{t('account.orderNumber')}</span>
                           <span className="value">{order.order_number}</span>
                         </div>
                         <div className="order-date">
@@ -309,15 +311,15 @@ const Account: React.FC = () => {
                       <div className="order-body">
                         <div className="order-info">
                           <div className="info-item">
-                            <span className="label">商品数量</span>
-                            <span className="value">{order.items_count} 件</span>
+                            <span className="label">{t('product.quantity')}</span>
+                            <span className="value">{order.items_count} {t('cart.items')}</span>
                           </div>
                           <div className="info-item">
-                            <span className="label">订单金额</span>
+                            <span className="label">{t('account.amount')}</span>
                             <span className="value amount">${order.total_amount}</span>
                           </div>
                           <div className="info-item">
-                            <span className="label">订单状态</span>
+                            <span className="label">{t('account.status')}</span>
                             <span 
                               className="value status"
                               style={{ color: getStatusColor(order.status) }}
@@ -326,16 +328,16 @@ const Account: React.FC = () => {
                             </span>
                           </div>
                           <div className="info-item">
-                            <span className="label">支付状态</span>
+                            <span className="label">{t('checkout.paymentMethod')}</span>
                             <span className="value">
-                              {order.payment_status === 'paid' ? '已支付' : '未支付'}
+                              {order.payment_status === 'paid' ? t('order.status.paid') : t('order.status.pending')}
                             </span>
                           </div>
                         </div>
 
                         <div className="order-actions">
                           <Link to={`/orders/${order.id}`} className="btn-view-order">
-                            查看详情
+                            {t('account.viewDetails')}
                           </Link>
                         </div>
                       </div>

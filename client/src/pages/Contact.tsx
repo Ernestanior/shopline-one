@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { apiFetch } from '../lib/api';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Contact.css';
 
 const Contact: React.FC = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,16 +47,16 @@ const Contact: React.FC = () => {
     <div className="contact">
       <div className="container">
         <div className="contact-header">
-          <h1>Contact Us</h1>
+          <h1>{t('contact.title')}</h1>
           <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
         </div>
 
         <div className="contact-content">
           <div className="contact-form-section">
-            <h2>Send us a Message</h2>
+            <h2>{t('contact.send')}</h2>
             <form onSubmit={handleSubmit} className="contact-form" id="contact-form">
               <div className="form-group">
-                <label htmlFor="name">Name *</label>
+                <label htmlFor="name">{t('contact.name')} *</label>
                 <input
                   type="text"
                   id="name"
@@ -66,7 +68,7 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Email *</label>
+                <label htmlFor="email">{t('auth.email')} *</label>
                 <input
                   type="email"
                   id="email"
@@ -90,7 +92,7 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="message">Message *</label>
+                <label htmlFor="message">{t('contact.message')} *</label>
                 <textarea
                   id="message"
                   name="message"
@@ -103,11 +105,11 @@ const Contact: React.FC = () => {
               </div>
 
               <button type="submit" className="btn-submit" disabled={submitting || submitted}>
-                {submitting ? 'Sending...' : submitted ? 'Sent!' : 'Send Message'}
+                {submitting ? t('common.loading') : submitted ? t('contact.success') : t('contact.send')}
               </button>
               
               {error && <div className="error-message">{error}</div>}
-              {submitted && <div className="success-message">Message sent successfully! We'll get back to you soon.</div>}
+              {submitted && <div className="success-message">{t('contact.success')}</div>}
             </form>
 
             <div className="faq-section" id="faq">
@@ -180,7 +182,7 @@ const Contact: React.FC = () => {
           </div>
 
           <div className="contact-info-section">
-            <h2>Other Ways to Reach Us</h2>
+            <h2>{t('footer.contact')}</h2>
             <div className="contact-methods">
               <div className="contact-method">
                 <div className="method-icon">📧</div>

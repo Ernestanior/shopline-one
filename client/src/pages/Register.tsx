@@ -2,10 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError } from '../lib/api';
 import { useAuth } from '../auth/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Register.css';
 
 const Register: React.FC = () => {
   const { register } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -54,12 +56,12 @@ const Register: React.FC = () => {
     >
       <div className="container">
         <div className="register-card">
-          <h1>Create account</h1>
-          <p className="register-subtitle">Sign up to save your favorites and checkout faster</p>
+          <h1>{t('register.title')}</h1>
+          <p className="register-subtitle">{t('register.subtitle')}</p>
 
           <form onSubmit={handleSubmit} className="register-form">
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{t('auth.email')}</label>
               <input
                 id="email"
                 type="email"
@@ -71,7 +73,7 @@ const Register: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('auth.password')}</label>
               <input
                 id="password"
                 type="password"
@@ -84,7 +86,7 @@ const Register: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm password</label>
+              <label htmlFor="confirmPassword">{t('auth.confirmPassword')}</label>
               <input
                 id="confirmPassword"
                 type="password"
@@ -99,13 +101,13 @@ const Register: React.FC = () => {
             {error && <div className="register-error">{error}</div>}
 
             <button type="submit" className="btn-register" disabled={isSubmitting}>
-              {isSubmitting ? 'Creating…' : 'Create account'}
+              {isSubmitting ? t('common.loading') : t('register.submit')}
             </button>
           </form>
 
           <div className="register-links">
-            <Link to="/login">Already have an account?</Link>
-            <Link to="/collections/productivity">Continue shopping</Link>
+            <Link to="/login">{t('register.hasAccount')}</Link>
+            <Link to="/collections/productivity">{t('cart.continueShopping')}</Link>
           </div>
         </div>
       </div>

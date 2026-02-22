@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 import Reveal from '../components/Reveal';
 import './About.css';
 
 const About: React.FC = () => {
+  const { t } = useLanguage();
   return (
     <div className="about">
       {/* Hero Section */}
@@ -23,7 +25,7 @@ const About: React.FC = () => {
         <div className="container">
           <Reveal>
             <div className="about-hero__content">
-              <h1>About ARVIX</h1>
+              <h1>{t('about.title')}</h1>
               <p>Designing tools that enhance everyday life through minimalist innovation</p>
             </div>
           </Reveal>
@@ -277,7 +279,7 @@ const About: React.FC = () => {
           <Reveal>
             <div className="cta-section">
               <Link to="/collections/productivity" className="btn-primary">
-                Explore Our Products
+                {t('home.collections.viewAll')}
               </Link>
             </div>
           </Reveal>

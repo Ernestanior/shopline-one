@@ -1,8 +1,10 @@
 import React from 'react';
 import './Footer.css';
 import { apiFetch } from '../lib/api';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Footer: React.FC = () => {
+  const { t } = useLanguage();
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -47,16 +49,16 @@ const Footer: React.FC = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>Stay in the loop with our newsletter</h3>
+          <h3>{t('footer.newsletter')}</h3>
           <form className="newsletter" onSubmit={handleNewsletterSubmit}>
-            <input type="email" placeholder="Enter your email" required />
-            <button type="submit">Subscribe</button>
+            <input type="email" placeholder={t('auth.email')} required />
+            <button type="submit">{t('footer.subscribe')}</button>
           </form>
         </div>
 
         <div className="footer-links">
           <div className="footer-column">
-            <h4>Shop</h4>
+            <h4>{t('nav.products')}</h4>
             <ul>
               <li><a href="/collections/mobility">Mobility</a></li>
               <li><a href="/collections/productivity">Productivity</a></li>
@@ -66,15 +68,15 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="footer-column">
-            <h4>Help</h4>
+            <h4>{t('footer.help')}</h4>
             <ul>
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/contact">Contact</a></li>
+              <li><a href="/about">{t('footer.about')}</a></li>
+              <li><a href="/contact">{t('footer.contact')}</a></li>
             </ul>
           </div>
 
           <div className="footer-column">
-            <h4>Follow Us</h4>
+            <h4>{t('footer.social')}</h4>
             <div className="social-links">
               <a href="https://www.instagram.com/arvix3114?igsh=eXQ0aDYwaTk3OHVx&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram (ARVIX)</a>
             </div>
