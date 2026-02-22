@@ -136,6 +136,42 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.newsletterDesc': '訂閱以獲取最新優惠和產品資訊',
     'footer.subscribe': '訂閱',
     'footer.copyright': '© 2024 時光科技. 版權所有.',
+    
+    // Login/Register
+    'login.title': '登入',
+    'login.subtitle': '登入您的帳戶',
+    'login.submit': '登入',
+    'login.noAccount': '還沒有帳戶？',
+    'login.createAccount': '建立帳戶',
+    'register.title': '註冊',
+    'register.subtitle': '建立新帳戶',
+    'register.submit': '註冊',
+    'register.hasAccount': '已有帳戶？',
+    'register.signIn': '登入',
+    
+    // Account Page
+    'account.welcome': '歡迎回來',
+    'account.recentOrders': '最近訂單',
+    'account.noOrders': '您還沒有任何訂單',
+    'account.startShopping': '開始購物',
+    'account.viewAll': '查看全部',
+    'account.orderDetails': '訂單詳情',
+    'account.payNow': '立即支付',
+    
+    // Product Pages
+    'product.relatedProducts': '相關商品',
+    'product.specifications': '規格',
+    'product.reviews': '評價',
+    'product.inStock': '有貨',
+    'product.limitedStock': '庫存有限',
+    
+    // About & Contact
+    'about.title': '關於我們',
+    'contact.title': '聯絡我們',
+    'contact.name': '姓名',
+    'contact.message': '訊息',
+    'contact.send': '發送',
+    'contact.success': '訊息已發送',
   },
   'en': {
     // Navigation
@@ -262,6 +298,42 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.newsletterDesc': 'Subscribe for latest offers and updates',
     'footer.subscribe': 'Subscribe',
     'footer.copyright': '© 2024 Seedlight Tech. All rights reserved.',
+    
+    // Login/Register
+    'login.title': 'Login',
+    'login.subtitle': 'Sign in to your account',
+    'login.submit': 'Sign In',
+    'login.noAccount': "Don't have an account?",
+    'login.createAccount': 'Create Account',
+    'register.title': 'Register',
+    'register.subtitle': 'Create a new account',
+    'register.submit': 'Register',
+    'register.hasAccount': 'Already have an account?',
+    'register.signIn': 'Sign In',
+    
+    // Account Page
+    'account.welcome': 'Welcome back',
+    'account.recentOrders': 'Recent Orders',
+    'account.noOrders': 'You have no orders yet',
+    'account.startShopping': 'Start Shopping',
+    'account.viewAll': 'View All',
+    'account.orderDetails': 'Order Details',
+    'account.payNow': 'Pay Now',
+    
+    // Product Pages
+    'product.relatedProducts': 'Related Products',
+    'product.specifications': 'Specifications',
+    'product.reviews': 'Reviews',
+    'product.inStock': 'In Stock',
+    'product.limitedStock': 'Limited Stock',
+    
+    // About & Contact
+    'about.title': 'About Us',
+    'contact.title': 'Contact Us',
+    'contact.name': 'Name',
+    'contact.message': 'Message',
+    'contact.send': 'Send',
+    'contact.success': 'Message sent',
   }
 };
 

@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError } from '../lib/api';
 import { useAuth } from '../auth/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Login.css';
 
 const Login: React.FC = () => {
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +35,7 @@ const Login: React.FC = () => {
       if (err instanceof ApiError) {
         setError(err.message);
       } else {
-        setError('network error');
+        setError(t('common.error'));
       }
     } finally {
       setIsSubmitting(false);
@@ -47,12 +49,12 @@ const Login: React.FC = () => {
     >
       <div className="container">
         <div className="login-card">
-          <h1>Login</h1>
-          <p className="login-subtitle">Sign in to your account</p>
+          <h1>{t('login.title')}</h1>
+          <p className="login-subtitle">{t('login.subtitle')}</p>
 
           <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{t('auth.email')}</label>
               <input
                 id="email"
                 type="email"
@@ -64,7 +66,7 @@ const Login: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('auth.password')}</label>
               <input
                 id="password"
                 type="password"
@@ -78,17 +80,17 @@ const Login: React.FC = () => {
             {error && <div className="login-error">{error}</div>}
 
             <button type="submit" className="btn-login" disabled={isSubmitting}>
-              {isSubmitting ? 'Signing In…' : 'Sign In'}
+              {isSubmitting ? `${t('login.submit')}…` : t('login.submit')}
             </button>
           </form>
 
           <div className="login-links">
-            <Link to="/contact">Need help?</Link>
-            <Link to="/collections/productivity">Continue shopping</Link>
+            <Link to="/contact">{t('footer.help')}</Link>
+            <Link to="/collections/productivity">{t('cart.continueShopping')}</Link>
           </div>
 
           <div className="login-note">
-            <p>Sign in to continue.</p>
+            <p>{t('login.subtitle')}</p>
           </div>
         </div>
       </div>
