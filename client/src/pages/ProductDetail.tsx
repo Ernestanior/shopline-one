@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Reveal from '../components/Reveal';
 import { apiFetch } from '../lib/api';
+import { useLanguage } from '../contexts/LanguageContext';
 import './ProductDetail.css';
 
 interface Product {
@@ -25,6 +26,7 @@ interface CartItem {
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useLanguage();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -88,17 +90,17 @@ const ProductDetail: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <div className="loading">{t('common.loading')}</div>;
   }
 
   if (!product) {
     return (
       <div className="product-not-found">
         <div className="container">
-          <h1>Product Not Found</h1>
-          <p>The product you're looking for doesn't exist.</p>
+          <h1>{t('product.notFound')}</h1>
+          <p>{t('product.notFoundDesc')}</p>
           <Link to="/collections/productivity" className="btn-primary">
-            Back to Products
+            {t('product.backToProducts')}
           </Link>
         </div>
       </div>
@@ -110,7 +112,7 @@ const ProductDetail: React.FC = () => {
       <div className="container">
         <Reveal>
           <nav className="breadcrumb">
-            <Link to="/">Home</Link>
+            <Link to="/">{t('collection.home')}</Link>
             <span>/</span>
             <Link to={`/collections/${product.category}`}>{product.category}</Link>
             <span>/</span>
@@ -123,9 +125,9 @@ const ProductDetail: React.FC = () => {
             <span>{toast}</span>
             <div className="toast-actions">
               {product && (
-                <Link to={`/collections/${product.category}`} className="toast-link toast-link--ghost">Continue</Link>
+                <Link to={`/collections/${product.category}`} className="toast-link toast-link--ghost">{t('product.continue')}</Link>
               )}
-              <Link to="/cart" className="toast-link">View cart</Link>
+              <Link to="/cart" className="toast-link">{t('product.viewCart')}</Link>
             </div>
           </div>
         )}
@@ -182,7 +184,7 @@ const ProductDetail: React.FC = () => {
                 <h1>{product.name}</h1>
                 <div className="product-meta">
                   <span className="category">{product.category}</span>
-                  {product.featured && <span className="featured">Featured</span>}
+                  {product.featured && <span className="featured">{t('product.featured')}</span>}
                 </div>
               </div>
 
@@ -190,7 +192,7 @@ const ProductDetail: React.FC = () => {
                 <div className="price-section">
                   <span className="price">${product.price}</span>
                   {product.status === 'coming-soon' && (
-                    <span className="coming-soon">Coming Soon</span>
+                    <span className="coming-soon">{t('product.comingSoon')}</span>
                   )}
                 </div>
 
@@ -222,29 +224,29 @@ const ProductDetail: React.FC = () => {
                     onClick={addToCart}
                     disabled={product.status === 'coming-soon'}
                   >
-                    {product.status === 'coming-soon' ? 'Coming Soon' : 'Add to Cart'}
+                    {product.status === 'coming-soon' ? t('product.comingSoon') : t('product.addToCart')}
                   </button>
                 </div>
 
                 <div className="purchase-note">
                   <div className="purchase-note__row">
                     <span className="dot" aria-hidden="true" />
-                    <span>30-day returns</span>
+                    <span>{t('product.returns')}</span>
                   </div>
                   <div className="purchase-note__row">
                     <span className="dot" aria-hidden="true" />
-                    <span>2–3 day domestic shipping</span>
+                    <span>{t('product.shipping')}</span>
                   </div>
                 </div>
               </div>
 
               <div className="description">
-                <h3>Description</h3>
+                <h3>{t('product.description')}</h3>
                 <p>{product.description}</p>
               </div>
 
               <div className="product-specs">
-                <h3>Product Specs</h3>
+                <h3>{t('product.specs')}</h3>
                 <ul>
                   <li>Material: Premium Aluminum</li>
                   <li>Dimensions: Compact and Portable</li>
@@ -255,23 +257,23 @@ const ProductDetail: React.FC = () => {
               </div>
 
               <div className="product-features">
-                <h3>Key Features</h3>
+                <h3>{t('product.features')}</h3>
                 <div className="features-grid">
                   <div className="feature">
                     <div className="feature-icon">✓</div>
-                    <span>Premium Materials</span>
+                    <span>{t('product.feature.premium')}</span>
                   </div>
                   <div className="feature">
                     <div className="feature-icon">✓</div>
-                    <span>Minimalist Design</span>
+                    <span>{t('product.feature.minimal')}</span>
                   </div>
                   <div className="feature">
                     <div className="feature-icon">✓</div>
-                    <span>Durable Construction</span>
+                    <span>{t('product.feature.durable')}</span>
                   </div>
                   <div className="feature">
                     <div className="feature-icon">✓</div>
-                    <span>Easy to Use</span>
+                    <span>{t('product.feature.easy')}</span>
                   </div>
                 </div>
               </div>
@@ -281,7 +283,7 @@ const ProductDetail: React.FC = () => {
 
         <Reveal>
           <div className="related-products">
-            <h3>You might also like</h3>
+            <h3>{t('product.youMightLike')}</h3>
             <div className="related-grid">
               {relatedProducts.length > 0 ? (
                 relatedProducts.map((p, idx) => (
@@ -298,13 +300,13 @@ const ProductDetail: React.FC = () => {
                       />
                       <h4>{p.name}</h4>
                       <p>${p.price}</p>
-                      <span className="btn-view">View</span>
+                      <span className="btn-view">{t('product.view')}</span>
                     </Link>
                   </Reveal>
                 ))
               ) : (
                 <Reveal>
-                  <div className="related-empty">No related products yet.</div>
+                  <div className="related-empty">{t('product.noRelated')}</div>
                 </Reveal>
               )}
             </div>

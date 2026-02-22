@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Reveal from '../components/Reveal';
 import { apiFetch } from '../lib/api';
+import { useLanguage } from '../contexts/LanguageContext';
 import './ProductCollection.css';
 
 interface Product {
@@ -23,6 +24,7 @@ interface Category {
 
 const ProductCollection: React.FC = () => {
   const { category } = useParams<{ category: string }>();
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -192,12 +194,12 @@ const ProductCollection: React.FC = () => {
             <div className="collection-header__overlay" />
             <div className="collection-header__content">
               <nav className="breadcrumb">
-                <Link to="/">Home</Link>
+                <Link to="/">{t('collection.home')}</Link>
                 <span>/</span>
-                <span>{currentCategory?.name || 'All Products'}</span>
+                <span>{currentCategory?.name || t('collection.allProducts')}</span>
               </nav>
               
-              <h1>{currentCategory?.name || 'All Products'}</h1>
+              <h1>{currentCategory?.name || t('collection.allProducts')}</h1>
               {currentCategory && (
                 <p className="collection-description">{currentCategory.description}</p>
               )}
@@ -209,14 +211,14 @@ const ProductCollection: React.FC = () => {
         <Reveal delayMs={80}>
           <div className="collection-controls">
             <div className="results-count">
-              {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
+              {filteredProducts.length} {filteredProducts.length === 1 ? t('collection.product') : t('collection.products')}
             </div>
 
             <div className="collection-filters">
               <div className="search-box">
                 <input
                   type="text"
-                  placeholder="Search products..."
+                  placeholder={t('collection.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="search-input"
@@ -224,17 +226,17 @@ const ProductCollection: React.FC = () => {
               </div>
 
               <div className="sort-controls">
-                <label htmlFor="sort">Sort by:</label>
+                <label htmlFor="sort">{t('collection.sortBy')}</label>
                 <div className="select-wrap">
                   <select
                     id="sort"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                   >
-                    <option value="featured">Featured</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                    <option value="name">Name: A to Z</option>
+                    <option value="featured">{t('collection.featured')}</option>
+                    <option value="price-low">{t('collection.priceLowHigh')}</option>
+                    <option value="price-high">{t('collection.priceHighLow')}</option>
+                    <option value="name">{t('collection.nameAZ')}</option>
                   </select>
                 </div>
               </div>
@@ -263,7 +265,7 @@ const ProductCollection: React.FC = () => {
                           target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80';
                         }}
                       />
-                      {product.featured && <div className="featured-badge">Featured</div>}
+                      {product.featured && <div className="featured-badge">{t('product.featured')}</div>}
                     </div>
                     <div className="product-info">
                       <h3>{product.name}</h3>
@@ -272,7 +274,7 @@ const ProductCollection: React.FC = () => {
                       </div>
                       <div className="product-footer">
                         <span className="price">${product.price}</span>
-                        <span className="btn-view-details">View Details</span>
+                        <span className="btn-view-details">{t('product.viewDetails')}</span>
                       </div>
                     </div>
                   </Link>
@@ -291,8 +293,8 @@ const ProductCollection: React.FC = () => {
                           target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80';
                         }}
                       />
-                      <div className="coming-soon-badge">Coming Soon</div>
-                      {product.featured && <div className="featured-badge">Featured</div>}
+                      <div className="coming-soon-badge">{t('product.comingSoon')}</div>
+                      {product.featured && <div className="featured-badge">{t('product.featured')}</div>}
                     </div>
                     <div className="product-info">
                       <h3>{product.name}</h3>
@@ -301,7 +303,7 @@ const ProductCollection: React.FC = () => {
                       </div>
                       <div className="product-footer">
                         <span className="price">${product.price}</span>
-                        <span className="coming-soon-text">Coming Soon</span>
+                        <span className="coming-soon-text">{t('product.comingSoon')}</span>
                       </div>
                     </div>
                   </div>
@@ -311,11 +313,11 @@ const ProductCollection: React.FC = () => {
           </div>
         ) : (
           <div className="no-products">
-            <h2>No products found</h2>
+            <h2>{t('collection.noProducts')}</h2>
             <p>
               {searchQuery 
-                ? `No products match "${searchQuery}". Try a different search term.`
-                : 'Check back later for new arrivals in this category.'
+                ? `${t('collection.noSearchResults')} "${searchQuery}". ${t('collection.tryDifferent')}`
+                : t('collection.noProductsDesc')
               }
             </p>
           </div>
@@ -324,7 +326,7 @@ const ProductCollection: React.FC = () => {
         {/* Category Navigation */}
         <Reveal>
           <div className="category-nav">
-            <h3>Shop Other Categories</h3>
+            <h3>{t('collection.shopOther')}</h3>
             <div className="category-links">
               {categories
                 .filter((cat) => cat.id !== category)

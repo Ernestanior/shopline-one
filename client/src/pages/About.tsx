@@ -26,7 +26,7 @@ const About: React.FC = () => {
           <Reveal>
             <div className="about-hero__content">
               <h1>{t('about.title')}</h1>
-              <p>Designing tools that enhance everyday life through minimalist innovation</p>
+              <p>{t('about.subtitle')}</p>
             </div>
           </Reveal>
         </div>
@@ -39,25 +39,25 @@ const About: React.FC = () => {
             <Reveal delayMs={60}>
               <div className="stat-item">
                 <div className="stat-value">50+</div>
-                <div className="stat-label">Products</div>
+                <div className="stat-label">{t('about.stats.products')}</div>
               </div>
             </Reveal>
             <Reveal delayMs={120}>
               <div className="stat-item">
                 <div className="stat-value">10K+</div>
-                <div className="stat-label">Happy Customers</div>
+                <div className="stat-label">{t('about.stats.customers')}</div>
               </div>
             </Reveal>
             <Reveal delayMs={180}>
               <div className="stat-item">
                 <div className="stat-value">25+</div>
-                <div className="stat-label">Countries</div>
+                <div className="stat-label">{t('about.stats.countries')}</div>
               </div>
             </Reveal>
             <Reveal delayMs={240}>
               <div className="stat-item">
                 <div className="stat-value">99%</div>
-                <div className="stat-label">Satisfaction</div>
+                <div className="stat-label">{t('about.stats.satisfaction')}</div>
               </div>
             </Reveal>
           </div>
@@ -68,49 +68,46 @@ const About: React.FC = () => {
         <div className="about-content">
           <Reveal>
             <div className="about-section">
-              <h2>Our Story</h2>
+              <h2>{t('about.story')}</h2>
               <p>
-                ARVIX began with a simple question: How can we make everyday tools better? 
-                From this question grew a commitment to minimalist design, functional innovation, and exceptional quality.
+                {t('about.storyText1')}
               </p>
               <p>
-                We believe that the best tools are those that disappear into your daily routine, 
-                working seamlessly until you forget they're even there. That's why every ARVIX product 
-                is designed with purpose, precision, and an unwavering attention to detail.
+                {t('about.storyText2')}
               </p>
             </div>
           </Reveal>
 
           <Reveal>
             <div className="about-section">
-              <h2>Our Philosophy</h2>
+              <h2>{t('about.philosophy')}</h2>
               <div className="philosophy-grid">
                 <Reveal delayMs={60}>
                   <div className="philosophy-item">
                     <div className="philosophy-icon">🎯</div>
-                    <h3>Purpose-Driven Design</h3>
-                    <p>Every product starts with a clear purpose and solves a real problem</p>
+                    <h3>{t('about.philosophy.purpose')}</h3>
+                    <p>{t('about.philosophy.purposeDesc')}</p>
                   </div>
                 </Reveal>
                 <Reveal delayMs={120}>
                   <div className="philosophy-item">
                     <div className="philosophy-icon">⚡</div>
-                    <h3>Minimalist Efficiency</h3>
-                    <p>Less complexity, more functionality in every interaction</p>
+                    <h3>{t('about.philosophy.minimal')}</h3>
+                    <p>{t('about.philosophy.minimalDesc')}</p>
                   </div>
                 </Reveal>
                 <Reveal delayMs={180}>
                   <div className="philosophy-item">
                     <div className="philosophy-icon">🔧</div>
-                    <h3>Craftsmanship</h3>
-                    <p>Premium materials and precision manufacturing</p>
+                    <h3>{t('about.philosophy.craft')}</h3>
+                    <p>{t('about.philosophy.craftDesc')}</p>
                   </div>
                 </Reveal>
                 <Reveal delayMs={240}>
                   <div className="philosophy-item">
                     <div className="philosophy-icon">🚀</div>
-                    <h3>Innovation</h3>
-                    <p>Pushing boundaries of what everyday tools can be</p>
+                    <h3>{t('about.philosophy.innovation')}</h3>
+                    <p>{t('about.philosophy.innovationDesc')}</p>
                   </div>
                 </Reveal>
               </div>
@@ -120,14 +117,14 @@ const About: React.FC = () => {
           {/* Timeline Section */}
           <Reveal>
             <div className="about-section">
-              <h2>Our Journey</h2>
+              <h2>{t('about.journey')}</h2>
               <div className="timeline">
                 <Reveal delayMs={60}>
                   <div className="timeline-item">
                     <div className="timeline-year">2020</div>
                     <div className="timeline-content">
-                      <h4>Founded</h4>
-                      <p>ARVIX was born from a passion for minimalist design</p>
+                      <h4>{t('about.journey.2020')}</h4>
+                      <p>{t('about.journey.2020desc')}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -135,8 +132,8 @@ const About: React.FC = () => {
                   <div className="timeline-item">
                     <div className="timeline-year">2021</div>
                     <div className="timeline-content">
-                      <h4>First Product Launch</h4>
-                      <p>Introduced our flagship productivity tools</p>
+                      <h4>{t('about.journey.2021')}</h4>
+                      <p>{t('about.journey.2021desc')}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -144,8 +141,8 @@ const About: React.FC = () => {
                   <div className="timeline-item">
                     <div className="timeline-year">2022</div>
                     <div className="timeline-content">
-                      <h4>Global Expansion</h4>
-                      <p>Reached customers in 25+ countries</p>
+                      <h4>{t('about.journey.2022')}</h4>
+                      <p>{t('about.journey.2022desc')}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -153,8 +150,8 @@ const About: React.FC = () => {
                   <div className="timeline-item">
                     <div className="timeline-year">2024</div>
                     <div className="timeline-content">
-                      <h4>Innovation Continues</h4>
-                      <p>50+ products and growing</p>
+                      <h4>{t('about.journey.2024')}</h4>
+                      <p>{t('about.journey.2024desc')}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -168,20 +165,20 @@ const About: React.FC = () => {
               <div className="commitment-list">
                 <Reveal delayMs={60}>
                   <div className="commitment-item">
-                    <h4>Quality Assurance</h4>
-                    <p>Every product undergoes rigorous testing to ensure reliability and durability</p>
+                    <h4>{t('about.commitment.quality')}</h4>
+                    <p>{t('about.commitment.qualityDesc')}</p>
                   </div>
                 </Reveal>
                 <Reveal delayMs={120}>
                   <div className="commitment-item">
                     <h4>Sustainable Practices</h4>
-                    <p>Environmentally conscious materials and responsible manufacturing processes</p>
+                    <p>{t('about.commitment.sustainableDesc')}</p>
                   </div>
                 </Reveal>
                 <Reveal delayMs={180}>
                   <div className="commitment-item">
-                    <h4>Customer Focus</h4>
-                    <p>Your satisfaction drives our innovation and improvement</p>
+                    <h4>{t('about.commitment.customer')}</h4>
+                    <p>{t('about.commitment.customerDesc')}</p>
                   </div>
                 </Reveal>
               </div>
@@ -191,7 +188,7 @@ const About: React.FC = () => {
           {/* Image Gallery */}
           <Reveal>
             <div className="about-section">
-              <h2>Behind the Scenes</h2>
+              <h2>{t('about.behind')}</h2>
               <div className="gallery-grid">
                 <Reveal delayMs={60}>
                   <div className="gallery-item gallery-item--large">
@@ -251,25 +248,25 @@ const About: React.FC = () => {
 
           <Reveal>
             <div className="about-section">
-              <h2>Get in Touch</h2>
+              <h2>{t('about.getInTouch')}</h2>
               <div className="contact-info">
                 <Reveal delayMs={60}>
                   <div className="contact-item">
-                    <h4>Customer Support</h4>
-                    <p>support@xyvn.com</p>
-                    <p>Mon-Fri: 9:00 AM - 6:00 PM (GMT+8)</p>
+                    <h4>{t('about.support')}</h4>
+                    <p>{t('about.supportEmail')}</p>
+                    <p>{t('about.supportHours')}</p>
                   </div>
                 </Reveal>
                 <Reveal delayMs={120}>
                   <div className="contact-item">
-                    <h4>Media Inquiries</h4>
-                    <p>media@xyvn.com</p>
+                    <h4>{t('about.media')}</h4>
+                    <p>{t('about.mediaEmail')}</p>
                   </div>
                 </Reveal>
                 <Reveal delayMs={180}>
                   <div className="contact-item">
-                    <h4>Business Partnerships</h4>
-                    <p>partnerships@xyvn.com</p>
+                    <h4>{t('about.partnerships')}</h4>
+                    <p>{t('about.partnershipsEmail')}</p>
                   </div>
                 </Reveal>
               </div>

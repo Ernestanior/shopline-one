@@ -60,10 +60,10 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h4>{t('nav.products')}</h4>
             <ul>
-              <li><a href="/collections/mobility">Mobility</a></li>
-              <li><a href="/collections/productivity">Productivity</a></li>
-              <li><a href="/collections/sanctuary">Sanctuary</a></li>
-              <li><a href="/collections/savoriness">Savoriness</a></li>
+              <li><a href="/collections/mobility">{t('footer.category.mobility')}</a></li>
+              <li><a href="/collections/productivity">{t('footer.category.productivity')}</a></li>
+              <li><a href="/collections/sanctuary">{t('footer.category.sanctuary')}</a></li>
+              <li><a href="/collections/savoriness">{t('footer.category.savoriness')}</a></li>
             </ul>
           </div>
 
@@ -85,9 +85,9 @@ const Footer: React.FC = () => {
 
         <div className="footer-bottom">
           <div className="legal-links">
-            <a href="/policies/privacy-policy">Privacy policy</a>
-            <a href="/policies/terms-of-service">Terms of service</a>
-            <a href="/policies/refund-policy">Refund policy</a>
+            <a href="/policies/privacy-policy">{t('footer.privacyPolicy')}</a>
+            <a href="/policies/terms-of-service">{t('footer.termsOfService')}</a>
+            <a href="/policies/refund-policy">{t('footer.refundPolicy')}</a>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../lib/api';
+import { useLanguage } from '../contexts/LanguageContext';
 import './Search.css';
 
 interface Product {
@@ -20,6 +21,7 @@ interface SearchProps {
 }
 
 const Search: React.FC<SearchProps> = ({ isOpen, onClose }) => {
+  const { t } = useLanguage();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -112,7 +114,7 @@ const Search: React.FC<SearchProps> = ({ isOpen, onClose }) => {
             </svg>
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder={t('search.placeholder')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleInputKeyDown}
@@ -130,10 +132,10 @@ const Search: React.FC<SearchProps> = ({ isOpen, onClose }) => {
 
         <div className="search-results">
           {loading ? (
-            <div className="search-loading">Searching...</div>
+            <div className="search-loading">{t('search.searching')}</div>
           ) : query.trim() === '' ? (
             <div className="search-suggestions">
-              <h3>Popular Searches</h3>
+              <h3>{t('search.popular')}</h3>
               <div className="suggestion-tags">
                 <span onClick={() => setQuery('ARVIX')}>ARVIX</span>
                 <span onClick={() => setQuery('Wallet')}>Wallet</span>
@@ -144,7 +146,7 @@ const Search: React.FC<SearchProps> = ({ isOpen, onClose }) => {
           ) : results.length > 0 ? (
             <>
               <div className="results-header">
-                <span>{results.length} results found</span>
+                <span>{results.length} {t('search.resultsFound')}</span>
               </div>
               <div className="results-list">
                 {results.map(product => (
@@ -171,7 +173,7 @@ const Search: React.FC<SearchProps> = ({ isOpen, onClose }) => {
                         <span className="result-category">{product.category}</span>
                         <span className="result-price">${product.price}</span>
                         {product.status === 'coming-soon' && (
-                          <span className="result-status">Coming Soon</span>
+                          <span className="result-status">{t('product.comingSoon')}</span>
                         )}
                       </div>
                     </div>
@@ -181,14 +183,14 @@ const Search: React.FC<SearchProps> = ({ isOpen, onClose }) => {
             </>
           ) : (
             <div className="no-results">
-              <h3>No results found</h3>
-              <p>Try searching with different keywords</p>
+              <h3>{t('search.noResults')}</h3>
+              <p>{t('search.tryDifferent')}</p>
               <div className="search-tips">
-                <h4>Search tips:</h4>
+                <h4>{t('collection.searchTips')}</h4>
                 <ul>
-                  <li>Check your spelling</li>
-                  <li>Try more general keywords</li>
-                  <li>Browse by categories</li>
+                  <li>{t('collection.checkSpelling')}</li>
+                  <li>{t('collection.tryGeneral')}</li>
+                  <li>{t('collection.browseCategories')}</li>
                 </ul>
               </div>
             </div>

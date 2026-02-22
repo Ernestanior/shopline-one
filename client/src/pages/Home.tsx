@@ -455,7 +455,7 @@ const Home: React.FC = () => {
             <Reveal delayMs={60}>
               <div className="testimonial-card">
                 <div className="testimonial-stars">★★★★★</div>
-                <div className="testimonial-quote">“The finish is unreal. It’s the kind of tool you want to keep on your desk.”</div>
+                <div className="testimonial-quote">"{t('home.testimonials.quote1')}"</div>
                 <div className="testimonial-meta">
                   <div className="testimonial-avatar">AL</div>
                   <div>
@@ -468,7 +468,7 @@ const Home: React.FC = () => {
             <Reveal delayMs={120}>
               <div className="testimonial-card">
                 <div className="testimonial-stars">★★★★★</div>
-                <div className="testimonial-quote">“Minimal but not boring. Everything feels considered.”</div>
+                <div className="testimonial-quote">"{t('home.testimonials.quote2')}"</div>
                 <div className="testimonial-meta">
                   <div className="testimonial-avatar">YC</div>
                   <div>
@@ -481,7 +481,7 @@ const Home: React.FC = () => {
             <Reveal delayMs={180}>
               <div className="testimonial-card">
                 <div className="testimonial-stars">★★★★★</div>
-                <div className="testimonial-quote">“Fits perfectly in my everyday carry. Quality is better than expected.”</div>
+                <div className="testimonial-quote">"{t('home.testimonials.quote3')}"</div>
                 <div className="testimonial-meta">
                   <div className="testimonial-avatar">SW</div>
                   <div>

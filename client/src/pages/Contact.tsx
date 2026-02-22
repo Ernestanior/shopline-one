@@ -48,7 +48,7 @@ const Contact: React.FC = () => {
       <div className="container">
         <div className="contact-header">
           <h1>{t('contact.title')}</h1>
-          <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+          <p>{t('contact.subtitle')}</p>
         </div>
 
         <div className="contact-content">
@@ -80,14 +80,14 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="subject">Subject</label>
+                <label htmlFor="subject">{t('contact.subject')}</label>
                 <input
                   type="text"
                   id="subject"
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder="How can we help?"
+                  placeholder={t('contact.subjectPlaceholder')}
                 />
               </div>
 
@@ -100,7 +100,7 @@ const Contact: React.FC = () => {
                   onChange={handleChange}
                   required
                   rows={6}
-                  placeholder="Tell us more about your inquiry..."
+                  placeholder={t('contact.messagePlaceholder')}
                 />
               </div>
 
@@ -113,87 +113,87 @@ const Contact: React.FC = () => {
             </form>
 
             <div className="faq-section" id="faq">
-              <h2>FAQ</h2>
-              <p className="faq-intro">Quick answers about checkout, shipping, and returns.</p>
+              <h2>{t('contact.faq')}</h2>
+              <p className="faq-intro">{t('contact.faqIntro')}</p>
 
               <div className="faq-accordion">
                 <details className="faq-details">
-                  <summary className="faq-summary">Why is the payment button disabled?</summary>
+                  <summary className="faq-summary">{t('faq.q1')}</summary>
                   <div className="faq-answer">
-                    This site is a demo of the checkout flow. Orders can be created, but payment is intentionally disabled.
+                    {t('faq.a1')}
                   </div>
                 </details>
 
                 <details className="faq-details">
-                  <summary className="faq-summary">Do I need an account to place an order?</summary>
+                  <summary className="faq-summary">{t('faq.q2')}</summary>
                   <div className="faq-answer">
-                    No. You can checkout as a guest. Creating an account helps you track your orders more easily.
+                    {t('faq.a2')}
                   </div>
                 </details>
 
                 <details className="faq-details">
-                  <summary className="faq-summary">What payment methods do you accept?</summary>
+                  <summary className="faq-summary">{t('faq.q3')}</summary>
                   <div className="faq-answer">
-                    We support major credit cards (Visa, Mastercard, AMEX) and popular digital wallets. In this demo, no payment is processed.
+                    {t('faq.a3')}
                   </div>
                 </details>
 
                 <details className="faq-details">
-                  <summary className="faq-summary">How long does shipping take?</summary>
+                  <summary className="faq-summary">{t('faq.q4')}</summary>
                   <div className="faq-answer">
-                    Domestic orders typically arrive within 2-3 business days. International shipping usually takes 7-14 business days depending on destination.
+                    {t('faq.a4')}
                   </div>
                 </details>
 
                 <details className="faq-details">
-                  <summary className="faq-summary">Do you ship internationally?</summary>
+                  <summary className="faq-summary">{t('faq.q5')}</summary>
                   <div className="faq-answer">
-                    Yes. Shipping costs and delivery times vary by country and will be shown at checkout.
+                    {t('faq.a5')}
                   </div>
                 </details>
 
                 <details className="faq-details">
-                  <summary className="faq-summary">Can I track my order?</summary>
+                  <summary className="faq-summary">{t('faq.q6')}</summary>
                   <div className="faq-answer">
-                    Yes. After shipment, we will send you a tracking number via email.
+                    {t('faq.a6')}
                   </div>
                 </details>
 
                 <details className="faq-details">
-                  <summary className="faq-summary">What is your return policy?</summary>
+                  <summary className="faq-summary">{t('faq.q7')}</summary>
                   <div className="faq-answer">
-                    Returns are accepted within 30 days for unused items in original packaging. Contact support to start a return.
+                    {t('faq.a7')}
                   </div>
                 </details>
 
                 <details className="faq-details">
-                  <summary className="faq-summary">My package is lost or damaged. What should I do?</summary>
+                  <summary className="faq-summary">{t('faq.q8')}</summary>
                   <div className="faq-answer">
-                    Contact us with your order number and we will help resolve it with the carrier.
+                    {t('faq.a8')}
                   </div>
                 </details>
               </div>
 
               <div className="faq-footer">
-                <p>Still have questions?</p>
-                <p className="faq-footer-text">Send us a message and our support team will get back to you.</p>
+                <p>{t('faq.stillQuestions')}</p>
+                <p className="faq-footer-text">{t('faq.contactSupport')}</p>
               </div>
             </div>
           </div>
 
           <div className="contact-info-section">
-            <h2>{t('footer.contact')}</h2>
+            <h2>{t('contact.info')}</h2>
             <div className="contact-methods">
               <div className="contact-method">
                 <div className="method-icon">📧</div>
-                <h3>Email Support</h3>
-                <p>support@xyvn.com</p>
-                <p className="method-detail">We respond within 24 hours on weekdays</p>
+                <h3>{t('contact.emailSupport')}</h3>
+                <p>{t('about.supportEmail')}</p>
+                <p className="method-detail">{t('contact.emailSupportDesc')}</p>
               </div>
 
               <div className="contact-method">
                 <div className="method-icon">💬</div>
-                <h3>Social Media</h3>
+                <h3>{t('contact.socialMedia')}</h3>
                 <div className="social-links">
                   <a href="https://www.facebook.com/xyvn" target="_blank" rel="noopener noreferrer">Facebook (ARVIX)</a>
                   <a href="https://x.com/xyvn" target="_blank" rel="noopener noreferrer">X (ARVIX)</a>
@@ -204,15 +204,15 @@ const Contact: React.FC = () => {
 
               <div className="contact-method">
                 <div className="method-icon">📍</div>
-                <h3>Office Location</h3>
-                <p>Taipei, Taiwan</p>
-                <p className="method-detail">Mon-Fri: 9:00 AM - 6:00 PM</p>
+                <h3>{t('contact.office')}</h3>
+                <p>{t('contact.officeLocation')}</p>
+                <p className="method-detail">{t('contact.officeHours')}</p>
               </div>
 
               <div className="contact-method">
                 <div className="method-icon">📚</div>
-                <h3>FAQ</h3>
-                <p>Find quick answers to common questions</p>
+                <h3>{t('contact.faq')}</h3>
+                <p>{t('contact.faqDesc')}</p>
                 <a
                   href="#faq"
                   className="method-link"
@@ -221,26 +221,26 @@ const Contact: React.FC = () => {
                     document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
-                  View FAQ
+                  {t('contact.viewFaq')}
                 </a>
               </div>
             </div>
           </div>
 
           <div className="response-info">
-            <h3>What to Expect</h3>
+            <h3>{t('contact.expect')}</h3>
             <div className="expectation-grid">
               <div className="expectation-item">
-                <h4>Response Time</h4>
-                <p>Within 24 hours for business inquiries</p>
+                <h4>{t('contact.responseTime')}</h4>
+                <p>{t('contact.responseTimeDesc')}</p>
               </div>
               <div className="expectation-item">
-                <h4>Support Hours</h4>
-                <p>Monday - Friday, 9:00 AM - 6:00 PM (GMT+8)</p>
+                <h4>{t('contact.supportHours')}</h4>
+                <p>{t('contact.supportHoursDesc')}</p>
               </div>
               <div className="expectation-item">
-                <h4>Languages</h4>
-                <p>English, Chinese (Traditional & Simplified)</p>
+                <h4>{t('contact.languages')}</h4>
+                <p>{t('contact.languagesDesc')}</p>
               </div>
             </div>
           </div>

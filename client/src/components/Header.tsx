@@ -47,13 +47,13 @@ const Header: React.FC = () => {
         { name: 'The Dual', path: '/collections/mobility' }
       ],
       sanctuary: [
-        { name: 'View all', path: '/collections/sanctuary' }
+        { name: t('mega.viewAll'), path: '/collections/sanctuary' }
       ],
       savoriness: [
-        { name: 'View all', path: '/collections/savoriness' }
+        { name: t('mega.viewAll'), path: '/collections/savoriness' }
       ]
     } as Record<string, { name: string; path: string }[]>;
-  }, []);
+  }, [t]);
 
   const megaPromos = useMemo(() => {
     return {
@@ -88,7 +88,7 @@ const Header: React.FC = () => {
           image: '/images/burst/product-gold-shelf-plant.jpg'
         },
         {
-          title: 'View all',
+          title: t('mega.viewAll'),
           path: '/collections/sanctuary',
           image: '/images/burst/hero-minimal-workspace.jpg'
         }
@@ -100,13 +100,13 @@ const Header: React.FC = () => {
           image: '/images/burst/product-coffee-ready-travel.jpg'
         },
         {
-          title: 'View all',
+          title: t('mega.viewAll'),
           path: '/collections/savoriness',
           image: '/images/burst/hero-working-from-home.jpg'
         }
       ]
     } as Record<string, { title: string; path: string; image: string }[]>;
-  }, []);
+  }, [t]);
 
   const displayedCategories = useMemo(() => {
     if (categories.length > 0) return categories;
@@ -295,7 +295,7 @@ const Header: React.FC = () => {
                             className="mega-menu-viewall"
                             onClick={() => setActiveMega(null)}
                           >
-                            View all
+                            {t('mega.viewAll')}
                           </Link>
                         </div>
 
@@ -339,14 +339,14 @@ const Header: React.FC = () => {
                             <div className="mega-menu-video__overlay" aria-hidden="true" />
 
                             <div className="mega-menu-video__content">
-                              <div className="mega-menu-video__eyebrow">Explore</div>
+                              <div className="mega-menu-video__eyebrow">{t('mega.explore')}</div>
                               <div className="mega-menu-video__title">{displayedCategories.find((c) => c.id === activeMega)?.name}</div>
                               <Link
                                 to={`/collections/${activeMega}`}
                                 className="mega-menu-video__cta"
                                 onClick={() => setActiveMega(null)}
                               >
-                                View collection
+                                {t('mega.viewCollection')}
                               </Link>
                             </div>
                           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { apiFetch } from '../lib/api';
 import { useNotification } from '../contexts/NotificationContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import './OrderDetail.css';
 
 interface OrderItem {
@@ -32,6 +33,7 @@ const OrderDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { showToast, showConfirm } = useNotification();
+  const { t } = useLanguage();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +68,7 @@ const OrderDetail: React.FC = () => {
       }
     } catch (err) {
       console.error('[OrderDetail] Failed to fetch order:', err);
-      setError('无法加载订单详情');
+      setError(t('orderDetail.cannotLoad'));
     } finally {
       setLoading(false);
     }
@@ -85,11 +87,11 @@ const OrderDetail: React.FC = () => {
 
   const getStatusText = (status: string) => {
     const texts: Record<string, string> = {
-      pending: '待处理',
-      processing: '处理中',
-      shipped: '已发货',
-      completed: '已完成',
-      cancelled: '已取消'
+      pending: t('order.status.pending'),
+      processing: t('order.status.processing'),
+      shipped: t('order.status.shipped'),
+      completed: t('order.status.delivered'),
+      cancelled: t('order.status.cancelled')
     };
     return texts[status] || status;
   };
@@ -107,7 +109,7 @@ const OrderDetail: React.FC = () => {
     return (
       <div className="order-detail">
         <div className="container">
-          <div className="loading-state">加载中...</div>
+          <div className="loading-state">{t('orderDetail.loading')}</div>
         </div>
       </div>
     );
@@ -119,8 +121,8 @@ const OrderDetail: React.FC = () => {
       <div className="order-detail">
         <div className="container">
           <div className="error-state">
-            <h2>{error || '订单不存在'}</h2>
-            <Link to="/account" className="btn-primary">返回我的账户</Link>
+            <h2>{error || t('orderDetail.notFound')}</h2>
+            <Link to="/account" className="btn-primary">{t('orderDetail.backToAccount')}</Link>
           </div>
         </div>
       </div>
@@ -136,22 +138,22 @@ const OrderDetail: React.FC = () => {
       <div className="container">
         <div className="order-detail-header">
           <button onClick={() => navigate(-1)} className="btn-back">
-            ← 返回
+            {t('orderDetail.back')}
           </button>
-          <h1>订单详情</h1>
+          <h1>{ t('orderDetail.title')}</h1>
         </div>
 
         <div className="order-detail-grid">
           <div className="order-detail-main">
-            {/* 订单信息 */}
+            {/* Order Info */}
             <div className="detail-card">
-              <h2>订单信息</h2>
+              <h2>{ t('orderDetail.orderInfo')}</h2>
               <div className="detail-row">
-                <span className="detail-label">订单号</span>
+                <span className="detail-label">{ t('orderDetail.orderNumber')}</span>
                 <span className="detail-value">{order.order_number}</span>
               </div>
               <div className="detail-row">
-                <span className="detail-label">下单时间</span>
+                <span className="detail-label">{ t('orderDetail.orderTime')}</span>
                 <span className="detail-value">
                   {new Date(order.created_at).toLocaleString('zh-CN', {
                     year: 'numeric',
@@ -163,7 +165,7 @@ const OrderDetail: React.FC = () => {
                 </span>
               </div>
               <div className="detail-row">
-                <span className="detail-label">订单状态</span>
+                <span className="detail-label">{ t('orderDetail.orderStatus')}</span>
                 <span 
                   className="detail-value status"
                   style={{ color: getStatusColor(order.status) }}
@@ -172,9 +174,9 @@ const OrderDetail: React.FC = () => {
                 </span>
               </div>
               <div className="detail-row">
-                <span className="detail-label">支付状态</span>
+                <span className="detail-label">{ t('orderDetail.paymentStatus')}</span>
                 <span className="detail-value">
-                  {order.payment_status === 'paid' ? '已支付' : '未支付'}
+                  {order.payment_status === 'paid' ? t('orderDetail.paid') : t('orderDetail.unpaid')}
                 </span>
               </div>
               
@@ -184,22 +186,22 @@ const OrderDetail: React.FC = () => {
                   <button 
                     className="btn-primary"
                     onClick={() => {
-                      // 跳转到支付页面，传递订单 ID
+                      // Navigate to payment page with order ID
                       navigate(`/checkout/payment/${order.id}`);
                     }}
                   >
-                    立即支付
+                    {t('orderDetail.payNow')}
                   </button>
                 )}
                 <button 
                   className="btn-delete"
                   onClick={async () => {
                     const confirmed = await showConfirm({
-                      title: '删除订单',
-                      message: '确定要删除此订单吗？此操作无法撤销。',
+                      title: t('orderDetail.deleteConfirmTitle'),
+                      message: t('orderDetail.deleteConfirmMessage'),
                       type: 'danger',
-                      confirmText: '删除',
-                      cancelText: '取消'
+                      confirmText: t('orderDetail.deleteConfirmButton'),
+                      cancelText: t('orderDetail.cancelButton')
                     });
 
                     if (confirmed) {
@@ -207,10 +209,10 @@ const OrderDetail: React.FC = () => {
                         await apiFetch(`/api/user/orders/${order.id}`, {
                           method: 'DELETE'
                         });
-                        showToast({ message: '订单已删除', type: 'success' });
+                        showToast({ message: t('orderDetail.deleteSuccess'), type: 'success' });
                         setTimeout(() => navigate('/account'), 1000);
                       } catch (error) {
-                        showToast({ message: '删除失败，请稍后重试', type: 'error' });
+                        showToast({ message: t('orderDetail.deleteFailed'), type: 'error' });
                       }
                     }
                   }}
@@ -220,9 +222,9 @@ const OrderDetail: React.FC = () => {
               </div>
             </div>
 
-            {/* 商品列表 */}
+            {/* Product List */}
             <div className="detail-card">
-              <h2>商品清单</h2>
+              <h2>{ t('orderDetail.productList')}</h2>
               <div className="order-items">
                 {order.items && order.items.length > 0 ? (
                   order.items.map((item) => (
@@ -240,8 +242,8 @@ const OrderDetail: React.FC = () => {
                       <div className="item-info">
                         <div className="item-name">{item.product_name}</div>
                         <div className="item-meta">
-                          <span>数量: {item.quantity}</span>
-                          <span>单价: ${item.price ? (typeof item.price === 'string' ? parseFloat(item.price).toFixed(2) : item.price.toFixed(2)) : '0.00'}</span>
+                          <span>{ t('orderDetail.quantity')}: {item.quantity}</span>
+                          <span>{ t('orderDetail.unitPrice')}: ${item.price ? (typeof item.price === 'string' ? parseFloat(item.price).toFixed(2) : item.price.toFixed(2)) : '0.00'}</span>
                         </div>
                       </div>
                       <div className="item-total">
@@ -250,32 +252,32 @@ const OrderDetail: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="empty-items">暂无商品信息</div>
+                  <div className="empty-items">{ t('orderDetail.noProducts')}</div>
                 )}
               </div>
             </div>
           </div>
 
           <div className="order-detail-sidebar">
-            {/* 收货信息 */}
+            {/* Shipping Info */}
             <div className="detail-card">
-              <h2>收货信息</h2>
+              <h2>{ t('orderDetail.shippingInfo')}</h2>
               <div className="shipping-info">
                 <div className="info-item">
-                  <div className="info-label">收货人</div>
+                  <div className="info-label">{ t('orderDetail.recipient')}</div>
                   <div className="info-value">{order.shipping_name}</div>
                 </div>
                 <div className="info-item">
-                  <div className="info-label">联系电话</div>
-                  <div className="info-value">{order.shipping_phone || '未提供'}</div>
+                  <div className="info-label">{ t('orderDetail.phone')}</div>
+                  <div className="info-value">{order.shipping_phone || t('orderDetail.notProvided')}</div>
                 </div>
                 <div className="info-item">
-                  <div className="info-label">邮箱</div>
+                  <div className="info-label">{ t('orderDetail.email')}</div>
                   <div className="info-value">{order.shipping_email}</div>
                 </div>
                 {address && (
                   <div className="info-item">
-                    <div className="info-label">收货地址</div>
+                    <div className="info-label">{ t('orderDetail.address')}</div>
                     <div className="info-value">
                       {address.address1}
                       {address.address2 && `, ${address.address2}`}
@@ -289,21 +291,21 @@ const OrderDetail: React.FC = () => {
               </div>
             </div>
 
-            {/* 金额汇总 */}
+            {/* Amount Summary */}
             <div className="detail-card">
-              <h2>金额汇总</h2>
+              <h2>{ t('orderDetail.amountSummary')}</h2>
               <div className="amount-summary">
                 <div className="amount-row">
-                  <span>商品小计</span>
+                  <span>{ t('orderDetail.subtotal')}</span>
                   <span>${order.total_amount ? (typeof order.total_amount === 'string' ? parseFloat(order.total_amount).toFixed(2) : order.total_amount.toFixed(2)) : '0.00'}</span>
                 </div>
                 <div className="amount-row">
-                  <span>运费</span>
+                  <span>{ t('orderDetail.shipping')}</span>
                   <span>$0.00</span>
                 </div>
                 <div className="amount-divider"></div>
                 <div className="amount-row total">
-                  <span>订单总额</span>
+                  <span>{ t('orderDetail.total')}</span>
                   <span>${order.total_amount ? (typeof order.total_amount === 'string' ? parseFloat(order.total_amount).toFixed(2) : order.total_amount.toFixed(2)) : '0.00'}</span>
                 </div>
               </div>
