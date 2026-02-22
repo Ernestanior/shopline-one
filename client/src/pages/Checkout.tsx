@@ -68,11 +68,13 @@ function onlyDigits(input: string) {
   return input.replace(/\D+/g, '');
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function formatCardNumberInput(raw: string) {
   const digits = onlyDigits(raw).slice(0, 19);
   return digits.replace(/(.{4})/g, '$1 ').trim();
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function formatExpiryInput(raw: string) {
   const digits = onlyDigits(raw).slice(0, 4);
   if (digits.length <= 2) return digits;
@@ -83,6 +85,7 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function isValidExpiry(expiry: string) {
   const m = expiry.match(/^(\d{2})\/(\d{2})$/);
   if (!m) return false;
@@ -135,6 +138,7 @@ export default function Checkout() {
     address2: '',
     postalCode: ''
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [card, setCard] = useState<CardInfo>({
     cardNumber: '',
     nameOnCard: '',
@@ -145,7 +149,9 @@ export default function Checkout() {
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [lastOrder, setLastOrder] = useState<LastOrder | null>(() => readLastOrder());
   const [hasLoadedUserData, setHasLoadedUserData] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [savedPaymentMethods, setSavedPaymentMethods] = useState<SavedPaymentMethod[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedPaymentId, setSelectedPaymentId] = useState<number | null>(null);
   const [useNewCard, setUseNewCard] = useState(false);
 
@@ -235,6 +241,7 @@ export default function Checkout() {
   const totalItems = useMemo(() => cartItems.reduce((sum, it) => sum + it.quantity, 0), [cartItems]);
 
   const cardDigits = useMemo(() => onlyDigits(card.cardNumber), [card.cardNumber]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const cvcDigits = useMemo(() => onlyDigits(card.cvc), [card.cvc]);
 
   const errors = useMemo(() => {

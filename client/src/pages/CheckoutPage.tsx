@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { apiFetch } from '../lib/api';
 import PaymentMethodSelector from '../components/PaymentMethodSelector';
@@ -24,7 +23,6 @@ interface Order {
 export default function CheckoutPage() {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { t } = useLanguage();
   
   const [order, setOrder] = useState<Order | null>(null);

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { apiFetch } from '../lib/api';
 import Reveal from '../components/Reveal';
 import './Cart.css';
 
@@ -16,12 +14,9 @@ interface CartItem {
 
 const Cart: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { t } = useLanguage();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [checkoutError, setCheckoutError] = useState<string>('');
 
   useEffect(() => {
     const loadCart = () => {
@@ -218,19 +213,6 @@ const Cart: React.FC = () => {
                     <span>{t('cart.total')}</span>
                     <span>${getGrandTotal().toFixed(2)}</span>
                   </div>
-
-                  {checkoutError && (
-                    <div className="checkout-error" style={{
-                      padding: '12px',
-                      marginBottom: '16px',
-                      background: '#fee',
-                      color: '#c33',
-                      borderRadius: '8px',
-                      fontSize: '14px'
-                    }}>
-                      {checkoutError}
-                    </div>
-                  )}
 
                   <button 
                     onClick={handleCheckout}
