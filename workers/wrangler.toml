@@ -23,6 +23,9 @@ database_id = "91a9ed99-1574-4543-9af6-ff77baf00ef8"
 ALLOWED_ORIGINS = "https://shopline-one.pages.dev,https://seedlight.tech,https://www.seedlight.tech,http://localhost:3000"
 PAYMENT_ENVIRONMENT = "test"
 FRONTEND_URL = "https://seedlight.tech"
+# API_URL 应该指向你的 Cloudflare Workers 域名（不带端口号）
+# 格式: https://<worker-name>.<your-subdomain>.workers.dev
+# 或使用自定义域名: https://api.seedlight.tech
 API_URL = "https://ecommerce-api.xyvn.workers.dev"
 DEFAULT_CURRENCY = "TWD"
 CREDIT_CARD_EXPIRATION_MINUTES = "30"
