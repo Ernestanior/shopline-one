@@ -26,21 +26,21 @@ export function PaymentMethodSelector({ onSelect }: PaymentMethodSelectorProps) 
   const GATEWAYS: Gateway[] = [
     {
       id: 'newebpay',
-      name: t('payment.newebpay'),
+      name: t('payment.newebpay') || '藍新金流',
       methods: [
-        { id: 'credit_card', name: t('payment.creditCard'), description: t('payment.creditCard.desc') },
-        { id: 'atm', name: t('payment.atm'), description: t('payment.atm.desc') },
-        { id: 'cvs', name: t('payment.cvs'), description: t('payment.cvs.desc') }
+        { id: 'credit_card', name: t('payment.creditCard') || '信用卡', description: t('payment.creditCard.desc') || '支持 Visa、Mastercard、JCB' },
+        { id: 'atm', name: t('payment.atm') || 'ATM 轉賬', description: t('payment.atm.desc') || '虛擬帳號轉賬，3天內完成' },
+        { id: 'cvs', name: t('payment.cvs') || '超商代碼', description: t('payment.cvs.desc') || '7-11、全家、萊爾富' }
       ]
     },
     {
       id: 'ecpay',
-      name: t('payment.ecpay'),
+      name: t('payment.ecpay') || '綠界科技',
       methods: [
-        { id: 'credit_card', name: t('payment.creditCard'), description: t('payment.creditCard.desc') },
-        { id: 'atm', name: t('payment.atm'), description: t('payment.atm.desc') },
-        { id: 'cvs', name: t('payment.cvs'), description: t('payment.cvs.desc') },
-        { id: 'barcode', name: t('payment.barcode'), description: t('payment.barcode.desc') }
+        { id: 'credit_card', name: t('payment.creditCard') || '信用卡', description: t('payment.creditCard.desc') || '支持 Visa、Mastercard、JCB' },
+        { id: 'atm', name: t('payment.atm') || 'ATM 轉賬', description: t('payment.atm.desc') || '虛擬帳號轉賬，3天內完成' },
+        { id: 'cvs', name: t('payment.cvs') || '超商代碼', description: t('payment.cvs.desc') || '7-11、全家、萊爾富' },
+        { id: 'barcode', name: t('payment.barcode') || '超商條碼', description: t('payment.barcode.desc') || '超商掃碼支付' }
       ]
     }
   ];
