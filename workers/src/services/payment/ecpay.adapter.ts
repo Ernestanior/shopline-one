@@ -30,12 +30,12 @@ export class ECPayAdapter implements PaymentGateway {
   async createPayment(params: PaymentRequest): Promise<PaymentResponse> {
     try {
       // 1. Build payment data object
-      const paymentData = {
+      const paymentData: Record<string, string> = {
         MerchantID: this.config.merchantId,
-        MerchantTradeNo: params.orderId,
+        MerchantTradeNo: String(params.orderId),
         MerchantTradeDate: this.formatDate(new Date()),
         PaymentType: 'aio',
-        TotalAmount: params.amount.toString(),
+        TotalAmount: String(params.amount),
         TradeDesc: this.encodeForECPay(params.description),
         ItemName: this.encodeForECPay(params.description),
         ReturnURL: params.notifyUrl,
@@ -217,6 +217,10 @@ export class ECPayAdapter implements PaymentGateway {
    * ECPay has specific requirements for these fields
    */
   private encodeForECPay(str: string): string {
+    // Ensure input is string
+    if (typeof str !== 'string') {
+      str = String(str);
+    }
     // Trim and limit length, remove special characters that ECPay doesn't accept
     const cleaned = str
       .trim()
@@ -316,6 +320,9 @@ ${fields}
    * Escape HTML special characters to prevent XSS
    */
   private escapeHtml(text: string): string {
+    if (typeof text !== 'string') {
+      text = String(text);
+    }
     const map: Record<string, string> = {
       '&': '&amp;',
       '<': '&lt;',

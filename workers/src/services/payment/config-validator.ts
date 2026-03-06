@@ -180,6 +180,11 @@ export function sanitizeConfigForLogging(config: PaymentConfig): any {
  * Shows first 4 and last 4 characters, masks the rest
  */
 function maskSensitiveData(data: string): string {
+  // Ensure input is a string
+  if (typeof data !== 'string') {
+    return '****';
+  }
+  
   if (data.length <= 8) {
     return '****';
   }

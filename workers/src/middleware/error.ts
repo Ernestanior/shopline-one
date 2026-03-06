@@ -130,6 +130,11 @@ export function maskSensitiveData(data: any): any {
  * Mask sensitive patterns in strings
  */
 function maskSensitiveString(str: string): string {
+  // Ensure input is a string
+  if (typeof str !== 'string') {
+    return String(str);
+  }
+  
   // Mask credit card numbers (16 digits)
   str = str.replace(/\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/g, '****-****-****-****');
   

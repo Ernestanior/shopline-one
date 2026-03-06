@@ -35,6 +35,8 @@ MAX_CONCURRENT_PENDING_PAYMENTS = "3"
 LOG_LEVEL = "INFO"
 ENABLE_PAYMENT_DEBUG_LOGS = "true"
 NEWEBPAY_VERSION = "2.0"
+NEWEBPAY_API_URL = "https://ccore.newebpay.com/MPG/mpg_gateway"
+ECPAY_API_URL = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
 
 # 密钥（使用 wrangler secret put <KEY_NAME> 设置）
 # 必需的密钥：
