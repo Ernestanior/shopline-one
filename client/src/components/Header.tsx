@@ -111,12 +111,12 @@ const Header: React.FC = () => {
   const displayedCategories = useMemo(() => {
     if (categories.length > 0) return categories;
     return [
-      { id: 'mobility', name: 'Mobility', description: '' },
-      { id: 'productivity', name: 'Productivity', description: '' },
-      { id: 'sanctuary', name: 'Sanctuary', description: '' },
-      { id: 'savoriness', name: 'Savoriness', description: '' }
+      { id: 'mobility', name: t('footer.category.mobility'), description: '' },
+      { id: 'productivity', name: t('footer.category.productivity'), description: '' },
+      { id: 'sanctuary', name: t('footer.category.sanctuary'), description: '' },
+      { id: 'savoriness', name: t('footer.category.savoriness'), description: '' }
     ];
-  }, [categories]);
+  }, [categories, t]);
 
   useEffect(() => {
     const updateCartCount = () => {

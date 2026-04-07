@@ -101,13 +101,11 @@ async function getOrder(db: DatabaseService, orderId: string, userId?: number) {
 /**
  * POST /api/payment/create
  * Create a payment request and return payment form HTML
+ * Supports both authenticated and guest users
  */
-payment.post('/create', requireAuth, async (c) => {
+payment.post('/create', async (c) => {
   try {
     const user = getCurrentUser(c);
-    if (!user) {
-      throw new UnauthorizedError('Authentication required');
-    }
 
     // Parse and validate request body
     const body = await c.req.json();
@@ -131,8 +129,8 @@ payment.post('/create', requireAuth, async (c) => {
     // Get database service
     const db = new DatabaseService(c.env.DB);
 
-    // Get order and verify ownership
-    const order = await getOrder(db, orderId, user.id);
+    // Get order - verify ownership only if user is logged in
+    const order = await getOrder(db, orderId, user?.id);
 
     // Verify order status
     if (order.status !== 'pending') {
@@ -155,7 +153,7 @@ payment.post('/create', requireAuth, async (c) => {
       amount: Math.round(order.total_amount * 100), // Convert to cents
       currency: 'TWD',
       description: `Order ${order.id}`,
-      buyerEmail: user.email,
+      buyerEmail: user?.email || order.shipping_email || '',
       paymentMethod,
       returnUrl: `${frontendUrl}/payment/return/${order.id}`,
       notifyUrl: `${apiUrl}/api/payment/callback/${gateway}`,
@@ -231,21 +229,18 @@ payment.post('/callback/:gateway', async (c) => {
 /**
  * GET /api/payment/status/:orderId
  * Query payment status for an order
+ * Supports both authenticated and guest users
  */
-payment.get('/status/:orderId', requireAuth, async (c) => {
+payment.get('/status/:orderId', async (c) => {
   try {
     const user = getCurrentUser(c);
-    if (!user) {
-      throw new UnauthorizedError('Authentication required');
-    }
-
     const orderId = c.req.param('orderId');
 
     // Get database service
     const db = new DatabaseService(c.env.DB);
 
-    // Verify order ownership
-    await getOrder(db, orderId, user.id);
+    // Verify order ownership only if user is logged in
+    await getOrder(db, orderId, user?.id);
 
     // Get payment configuration
     const paymentConfig = getPaymentConfig(c.env);

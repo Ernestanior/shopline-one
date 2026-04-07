@@ -58,24 +58,12 @@ const Cart: React.FC = () => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
-  const getShipping = () => {
-    const subtotal = getTotalPrice();
-    if (subtotal === 0) return 0;
-    return subtotal >= 50 ? 0 : 6.99;
-  };
-
   const getEstimatedTax = () => {
     return 0;
   };
 
-  const getFreeShippingDelta = () => {
-    const subtotal = getTotalPrice();
-    if (subtotal <= 0) return 0;
-    return Math.max(0, 50 - subtotal);
-  };
-
   const getGrandTotal = () => {
-    return getTotalPrice() + getShipping() + getEstimatedTax();
+    return getTotalPrice() + getEstimatedTax();
   };
 
   const getTotalItems = () => {
@@ -192,22 +180,11 @@ const Cart: React.FC = () => {
                   </div>
                   
                   <div className="summary-row">
-                    <span>{t('checkout.shipping')}</span>
-                    <span>{getShipping() === 0 ? 'Free' : `$${getShipping().toFixed(2)}`}</span>
-                  </div>
-
-                  <div className="summary-row">
-                    <span>Estimated tax</span>
+                    <span>{t('cart.estimatedTax')}</span>
                     <span>${getEstimatedTax().toFixed(2)}</span>
                   </div>
 
                   <div className="summary-divider" />
-
-                  {getFreeShippingDelta() > 0 && (
-                    <div className="summary-hint">
-                      Add <strong>${getFreeShippingDelta().toFixed(2)}</strong> more for free shipping.
-                    </div>
-                  )}
                   
                   <div className="summary-row total">
                     <span>{t('cart.total')}</span>
@@ -227,7 +204,7 @@ const Cart: React.FC = () => {
                   </button>
 
                   <div className="checkout-microcopy">
-                    Taxes and shipping calculated at checkout. Your payment details are encrypted.
+                    {t('cart.checkoutNote')}
                   </div>
                 </div>
               </div>
@@ -239,7 +216,7 @@ const Cart: React.FC = () => {
         {cartItems.length > 0 && (
           <Reveal>
             <div className="recommendations">
-              <h3>You might also like</h3>
+              <h3>{t('cart.recommendations')}</h3>
               <div className="recommendation-grid">
                 <Reveal delayMs={0}>
                   <div className="recommendation-card">
@@ -256,7 +233,7 @@ const Cart: React.FC = () => {
                     </div>
                     <h4>ARVIX 3 Series</h4>
                     <p>$89.99</p>
-                    <button className="btn-add-to-cart">Add to Cart</button>
+                    <button className="btn-add-to-cart">{t('product.addToCart')}</button>
                   </div>
                 </Reveal>
                 
@@ -275,7 +252,7 @@ const Cart: React.FC = () => {
                     </div>
                     <h4>Tool Card</h4>
                     <p>$39.99</p>
-                    <button className="btn-add-to-cart">Add to Cart</button>
+                    <button className="btn-add-to-cart">{t('product.addToCart')}</button>
                   </div>
                 </Reveal>
                 
@@ -294,7 +271,7 @@ const Cart: React.FC = () => {
                     </div>
                     <h4>CoinSlide</h4>
                     <p>$49.99</p>
-                    <button className="btn-add-to-cart">Add to Cart</button>
+                    <button className="btn-add-to-cart">{t('product.addToCart')}</button>
                   </div>
                 </Reveal>
               </div>

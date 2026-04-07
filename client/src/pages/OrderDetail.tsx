@@ -299,10 +299,6 @@ const OrderDetail: React.FC = () => {
                   <span>{ t('orderDetail.subtotal')}</span>
                   <span>${order.total_amount ? (typeof order.total_amount === 'string' ? parseFloat(order.total_amount).toFixed(2) : order.total_amount.toFixed(2)) : '0.00'}</span>
                 </div>
-                <div className="amount-row">
-                  <span>{ t('orderDetail.shipping')}</span>
-                  <span>$0.00</span>
-                </div>
                 <div className="amount-divider"></div>
                 <div className="amount-row total">
                   <span>{ t('orderDetail.total')}</span>

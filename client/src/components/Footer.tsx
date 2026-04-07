@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
       const email = input.value;
       const originalText = button.textContent;
       button.disabled = true;
-      button.textContent = 'Subscribing...';
+      button.textContent = t('common.loading');
       
       try {
         await apiFetch('/api/newsletter/subscribe', {
@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
           json: { email }
         });
         
-        button.textContent = '✓ Subscribed!';
+        button.textContent = '✓ ' + t('common.success');
         button.style.background = '#10b981';
         input.value = '';
         
@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
           button.disabled = false;
         }, 3000);
       } catch (error) {
-        button.textContent = '✗ Failed';
+        button.textContent = '✗ ' + t('common.error');
         button.style.background = '#ef4444';
         
         setTimeout(() => {

@@ -248,10 +248,6 @@ export default function CheckoutPage() {
                   <span>{t('cart.subtotal')} ({totalItems} {t('cart.items')})</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
-                <div className="summary-row">
-                  <span>{t('checkout.shipping')}</span>
-                  <span>{t('checkout.toBeCalculated')}</span>
-                </div>
                 <div className="summary-divider" />
                 <div className="summary-row total">
                   <span>{t('cart.total')}</span>

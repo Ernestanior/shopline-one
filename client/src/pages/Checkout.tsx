@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { apiFetch } from '../lib/api';
 import Reveal from '../components/Reveal';
 import './Checkout.css';
@@ -122,6 +123,7 @@ function readLastOrder(): LastOrder | null {
 export default function Checkout() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [stepIndex, setStepIndex] = useState(0);
   const step: Step = STEPS[stepIndex] || 'Information';
 
@@ -284,7 +286,7 @@ export default function Checkout() {
     return false;
   }, [cartItems.length, step, errors]);
 
-  const nextLabel = step === 'Review' ? 'Place order' : 'Continue';
+  const nextLabel = step === 'Review' ? t('checkout.placeOrder') : t('checkout.next');
 
   const handleNext = async () => {
     if (!canGoNext) return;
@@ -441,20 +443,20 @@ export default function Checkout() {
         <Reveal>
           <div className="checkout-header">
             <div className="checkout-title">
-              <h1>Checkout</h1>
+              <h1>{t('checkout.title')}</h1>
               <p className="checkout-steps">
                 {STEPS.map((s, idx) => (
                   <span
                     key={s}
                     className={`checkout-step ${idx === stepIndex ? 'is-active' : idx < stepIndex ? 'is-done' : ''}`.trim()}
                   >
-                    {idx + 1}. {s}
+                    {idx + 1}. {t(`checkout.step.${s.toLowerCase()}`)}
                   </span>
                 ))}
               </p>
             </div>
             <Link to="/cart" className="checkout-backlink">
-              ← Back to cart
+              ← {t('checkout.backToCart')}
             </Link>
           </div>
         </Reveal>
@@ -462,10 +464,10 @@ export default function Checkout() {
         {cartItems.length === 0 && !isPaymentStep ? (
           <Reveal>
             <div className="checkout-empty">
-              <h2>Your cart is empty</h2>
-              <p>Please add items to your cart before checking out.</p>
+              <h2>{t('checkout.cartEmpty')}</h2>
+              <p>{t('checkout.cartEmptyDesc')}</p>
               <Link to="/collections/productivity" className="btn-primary">
-                Continue shopping
+                {t('checkout.continueShopping')}
               </Link>
             </div>
           </Reveal>
@@ -475,20 +477,20 @@ export default function Checkout() {
               {step === 'Information' && (
                 <Reveal>
                   <section className="checkout-section">
-                    <h2>Contact information</h2>
+                    <h2>{t('checkout.contactInfo')}</h2>
                     {user && (
                       <div className="autofill-notice">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                           <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <span>已登录为 {user.email}</span>
+                        <span>{t('checkout.loggedInAs')} {user.email}</span>
                       </div>
                     )}
                     <div className="checkout-form">
                       <div className="form-row">
                         <div className="form-group">
-                          <label htmlFor="checkout-email">Email *</label>
+                          <label htmlFor="checkout-email">{t('auth.email')} *</label>
                           <input
                             id="checkout-email"
                             type="email"
@@ -501,7 +503,7 @@ export default function Checkout() {
                           {touched.email && errors.email && <div className="field-error">{errors.email}</div>}
                         </div>
                         <div className="form-group">
-                          <label htmlFor="checkout-phone">Phone</label>
+                          <label htmlFor="checkout-phone">{t('orderDetail.phone')}</label>
                           <input
                             id="checkout-phone"
                             type="tel"
@@ -519,20 +521,20 @@ export default function Checkout() {
               {step === 'Shipping' && (
                 <Reveal>
                   <section className="checkout-section">
-                    <h2>Shipping address</h2>
+                    <h2>{t('checkout.shippingAddress')}</h2>
                     {user && address.address1 && (
                       <div className="autofill-notice">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
                           <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
                         </svg>
-                        <span>使用默认地址</span>
+                        <span>{t('checkout.usingDefaultAddress')}</span>
                       </div>
                     )}
                     <div className="checkout-form">
                       <div className="form-row">
                         <div className="form-group">
-                          <label htmlFor="firstName">First name *</label>
+                          <label htmlFor="firstName">{t('checkout.firstName')}</label>
                           <input
                             id="firstName"
                             value={address.firstName}
@@ -543,7 +545,7 @@ export default function Checkout() {
                           {touched.firstName && errors.firstName && <div className="field-error">{errors.firstName}</div>}
                         </div>
                         <div className="form-group">
-                          <label htmlFor="lastName">Last name *</label>
+                          <label htmlFor="lastName">{t('checkout.lastName')}</label>
                           <input
                             id="lastName"
                             value={address.lastName}
@@ -557,7 +559,7 @@ export default function Checkout() {
 
                       <div className="form-row">
                         <div className="form-group">
-                          <label htmlFor="country">Country/Region *</label>
+                          <label htmlFor="country">{t('checkout.country')}</label>
                           <input
                             id="country"
                             value={address.country}
@@ -566,7 +568,7 @@ export default function Checkout() {
                           />
                         </div>
                         <div className="form-group">
-                          <label htmlFor="city">City *</label>
+                          <label htmlFor="city">{t('checkout.city')}</label>
                           <input
                             id="city"
                             value={address.city}
@@ -579,20 +581,20 @@ export default function Checkout() {
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="address1">Address *</label>
+                        <label htmlFor="address1">{t('checkout.address')}</label>
                         <input
                           id="address1"
                           value={address.address1}
                           onBlur={() => setTouched((t) => ({ ...t, address1: true }))}
                           onChange={(e) => setAddress((v) => ({ ...v, address1: e.target.value }))}
-                          placeholder="Street address"
+                          placeholder={t('checkout.addressPlaceholder')}
                           required
                         />
                         {touched.address1 && errors.address1 && <div className="field-error">{errors.address1}</div>}
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="address2">Apartment, suite, etc.</label>
+                        <label htmlFor="address2">{t('checkout.address2')}</label>
                         <input
                           id="address2"
                           value={address.address2}
@@ -602,7 +604,7 @@ export default function Checkout() {
 
                       <div className="form-row">
                         <div className="form-group">
-                          <label htmlFor="postalCode">Postal code *</label>
+                          <label htmlFor="postalCode">{t('checkout.postalCode')}</label>
                           <input
                             id="postalCode"
                             value={address.postalCode}
@@ -613,10 +615,6 @@ export default function Checkout() {
                           {touched.postalCode && errors.postalCode && <div className="field-error">{errors.postalCode}</div>}
                         </div>
                       </div>
-
-                      <div className="checkout-note">
-                        Shipping fee will be calculated at checkout. Free shipping over $50.
-                      </div>
                     </div>
                   </section>
                 </Reveal>
@@ -625,17 +623,17 @@ export default function Checkout() {
               {step === 'Review' && (
                 <Reveal>
                   <section className="checkout-section">
-                    <h2>Review your order</h2>
+                    <h2>{t('checkout.reviewOrder')}</h2>
                     
                     <div className="checkout-review">
-                      <h3>Order Summary</h3>
+                      <h3>{t('checkout.orderSummary')}</h3>
                       <div className="checkout-review-grid">
                         <div>
-                          <div className="review-label">Contact</div>
+                          <div className="review-label">{t('checkout.contact')}</div>
                           <div className="review-value">{contact.email || '—'}</div>
                         </div>
                         <div>
-                          <div className="review-label">Ship to</div>
+                          <div className="review-label">{t('checkout.shipTo')}</div>
                           <div className="review-value">
                             {address.firstName || address.lastName || address.address1 ? (
                               <>
@@ -716,19 +714,16 @@ export default function Checkout() {
                             }
 
                             try {
-                              // Update payment status if user is logged in
+                              // Update payment status if user is logged in (optional)
                               if (user) {
                                 await apiFetch(`/api/user/orders/${lastOrder.orderId}/payment`, {
                                   method: 'PATCH'
-                                });
+                                }).catch(() => {/* ignore if fails for guest */});
                               }
-                              
-                              // Navigate to home
-                              navigate('/', { replace: true });
+                              navigate(`/checkout/${lastOrder.orderId}`);
                             } catch (error) {
-                              console.error('Payment update failed:', error);
-                              // Still navigate even if payment update fails (for demo purposes)
-                              navigate('/', { replace: true });
+                              console.error('Navigation error:', error);
+                              navigate(`/checkout/${lastOrder.orderId}`);
                             }
                           }}
                         >
@@ -785,25 +780,21 @@ export default function Checkout() {
                   </div>
 
                   <div className="summary-row">
-                    <span>Subtotal ({isPaymentStep && lastOrder ? lastOrder.items.reduce((sum, it) => sum + it.quantity, 0) : totalItems} items)</span>
+                    <span>{t('cart.subtotal')} ({isPaymentStep && lastOrder ? lastOrder.items.reduce((sum, it) => sum + it.quantity, 0) : totalItems} {t('cart.items')})</span>
                     <span>{formatMoney(isPaymentStep && lastOrder ? lastOrder.totals.subtotal : subtotal)}</span>
                   </div>
                   <div className="summary-row">
-                    <span>Shipping</span>
-                    <span>{(isPaymentStep && lastOrder ? lastOrder.totals.shipping : shipping) === 0 ? 'Free' : formatMoney(isPaymentStep && lastOrder ? lastOrder.totals.shipping : shipping)}</span>
-                  </div>
-                  <div className="summary-row">
-                    <span>Estimated tax</span>
+                    <span>{t('cart.estimatedTax')}</span>
                     <span>{formatMoney(isPaymentStep && lastOrder ? lastOrder.totals.estimatedTax : estimatedTax)}</span>
                   </div>
                   <div className="summary-divider" />
                   <div className="summary-row total">
-                    <span>Total</span>
+                    <span>{t('cart.total')}</span>
                     <span>{formatMoney(isPaymentStep && lastOrder ? lastOrder.totals.total : total)}</span>
                   </div>
 
                   <div className="checkout-microcopy">
-                    Taxes and shipping calculated at checkout. Your payment details are encrypted.
+                    {t('cart.checkoutNote')}
                   </div>
                 </div>
               </Reveal>
