@@ -44,7 +44,7 @@ const productValidation = [
     .isLength({ min: 1, max: 255 })
     .withMessage('Product name must be between 1 and 255 characters'),
   body('category')
-    .isIn(['productivity', 'mobility', 'sanctuary', 'savoriness'])
+    .isIn(['ebooks'])
     .withMessage('Invalid category'),
   body('price')
     .isFloat({ min: 0 })

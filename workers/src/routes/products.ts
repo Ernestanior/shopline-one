@@ -51,10 +51,7 @@ products.get('/:id', async (c) => {
 // Get categories
 products.get('/categories/list', (c) => {
   const categories = [
-    { id: 'mobility', name: 'Mobility', description: 'Minimalist wallets and carry solutions' },
-    { id: 'productivity', name: 'Productivity', description: 'Useful tools for daily tasks' },
-    { id: 'sanctuary', name: 'Sanctuary', description: 'Home and lifestyle products' },
-    { id: 'savoriness', name: 'Savoriness', description: 'Food and dining accessories' }
+    { id: 'ebooks', name: 'E-books', description: 'Technical guides and learning resources' }
   ];
 
   return c.json(categories);
