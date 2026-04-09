@@ -98,13 +98,6 @@ const About: React.FC = () => {
                 </Reveal>
                 <Reveal delayMs={180}>
                   <div className="philosophy-item">
-                    <div className="philosophy-icon">🔧</div>
-                    <h3>{t('about.philosophy.craft')}</h3>
-                    <p>{t('about.philosophy.craftDesc')}</p>
-                  </div>
-                </Reveal>
-                <Reveal delayMs={240}>
-                  <div className="philosophy-item">
                     <div className="philosophy-icon">🚀</div>
                     <h3>{t('about.philosophy.innovation')}</h3>
                     <p>{t('about.philosophy.innovationDesc')}</p>
@@ -161,7 +154,7 @@ const About: React.FC = () => {
 
           <Reveal>
             <div className="about-section">
-              <h2>Our Commitment</h2>
+              <h2>{t('about.commitment')}</h2>
               <div className="commitment-list">
                 <Reveal delayMs={60}>
                   <div className="commitment-item">
@@ -171,7 +164,7 @@ const About: React.FC = () => {
                 </Reveal>
                 <Reveal delayMs={120}>
                   <div className="commitment-item">
-                    <h4>Sustainable Practices</h4>
+                    <h4>{t('about.commitment.sustainable')}</h4>
                     <p>{t('about.commitment.sustainableDesc')}</p>
                   </div>
                 </Reveal>
@@ -179,67 +172,6 @@ const About: React.FC = () => {
                   <div className="commitment-item">
                     <h4>{t('about.commitment.customer')}</h4>
                     <p>{t('about.commitment.customerDesc')}</p>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Image Gallery */}
-          <Reveal>
-            <div className="about-section">
-              <h2>{t('about.behind')}</h2>
-              <div className="gallery-grid">
-                <Reveal delayMs={60}>
-                  <div className="gallery-item gallery-item--large">
-                    <img 
-                      src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" 
-                      alt="Workspace" 
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80';
-                      }}
-                    />
-                  </div>
-                </Reveal>
-                <Reveal delayMs={120}>
-                  <div className="gallery-item">
-                    <img 
-                      src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80" 
-                      alt="Products" 
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80';
-                      }}
-                    />
-                  </div>
-                </Reveal>
-                <Reveal delayMs={180}>
-                  <div className="gallery-item">
-                    <img 
-                      src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=800&q=80" 
-                      alt="Design" 
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80';
-                      }}
-                    />
-                  </div>
-                </Reveal>
-                <Reveal delayMs={240}>
-                  <div className="gallery-item gallery-item--wide">
-                    <img 
-                      src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80" 
-                      alt="Studio" 
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80';
-                      }}
-                    />
                   </div>
                 </Reveal>
               </div>
@@ -259,14 +191,10 @@ const About: React.FC = () => {
                 </Reveal>
                 <Reveal delayMs={120}>
                   <div className="contact-item">
-                    <h4>{t('about.media')}</h4>
-                    <p>{t('about.mediaEmail')}</p>
-                  </div>
-                </Reveal>
-                <Reveal delayMs={180}>
-                  <div className="contact-item">
                     <h4>{t('about.partnerships')}</h4>
-                    <p>{t('about.partnershipsEmail')}</p>
+                    <a href={t('about.partnershipsLink')} target="_blank" rel="noopener noreferrer">
+                      {t('about.partnershipsEmail')}
+                    </a>
                   </div>
                 </Reveal>
               </div>
@@ -275,7 +203,7 @@ const About: React.FC = () => {
 
           <Reveal>
             <div className="cta-section">
-              <Link to="/collections/productivity" className="btn-primary">
+              <Link to="/collections/ebooks" className="btn-primary">
                 {t('home.collections.viewAll')}
               </Link>
             </div>

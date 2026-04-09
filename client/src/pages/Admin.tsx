@@ -438,10 +438,7 @@ const Admin: React.FC = () => {
                   <form onSubmit={saveProduct}>
                     <input name="name" placeholder="商品名称" defaultValue={editingProduct?.name} required />
                     <select name="category" defaultValue={editingProduct?.category} required>
-                      <option value="productivity">Productivity</option>
-                      <option value="mobility">Mobility</option>
-                      <option value="sanctuary">Sanctuary</option>
-                      <option value="savoriness">Savoriness</option>
+                      <option value="ebooks">E-books (電子書)</option>
                     </select>
                     <input name="price" type="number" step="0.01" placeholder="价格" defaultValue={editingProduct?.price} required />
                     <textarea name="description" placeholder="描述" defaultValue={editingProduct?.description} required />

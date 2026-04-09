@@ -184,36 +184,12 @@ const Home: React.FC = () => {
               </p>
 
               <div className="hero-cta">
-                <Link to="/collections/productivity" className="btn-primary">
+                <Link to="/collections/ebooks" className="btn-primary">
                   {t('home.hero.cta')}
                 </Link>
-                <Link to="/collections/mobility" className="btn-secondary">
+                <Link to="/collections/ebooks" className="btn-secondary">
                   {t('home.hero.ctaSecondary')}
                 </Link>
-              </div>
-
-              <div className="hero-trust">
-                <div className="trust-item">
-                  <div className="trust-icon">🚚</div>
-                  <div className="trust-content">
-                    <div className="trust-value">{t('home.hero.shippingDays')}</div>
-                    <div className="trust-label">{t('home.hero.shipping')}</div>
-                  </div>
-                </div>
-                <div className="trust-item">
-                  <div className="trust-icon">↩️</div>
-                  <div className="trust-content">
-                    <div className="trust-value">{t('home.hero.returnsDays')}</div>
-                    <div className="trust-label">{t('home.hero.returns')}</div>
-                  </div>
-                </div>
-                <div className="trust-item">
-                  <div className="trust-icon">🔒</div>
-                  <div className="trust-content">
-                    <div className="trust-value">{t('home.hero.secure')}</div>
-                    <div className="trust-label">{t('home.hero.secureText')}</div>
-                  </div>
-                </div>
               </div>
             </Reveal>
 
@@ -224,13 +200,6 @@ const Home: React.FC = () => {
                     <img 
                       src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80" 
                       alt="Workspace essentials"
-                      loading="eager"
-                    />
-                  </div>
-                  <div className="hero-media-card hero-media-card--secondary">
-                    <img 
-                      src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=800&q=80" 
-                      alt="Carry essentials"
                       loading="eager"
                     />
                   </div>
@@ -303,13 +272,7 @@ const Home: React.FC = () => {
                 <Link to={`/collections/${category.id}`} className="showcase-card">
                   <div className="showcase-card__image">
                     <img
-                      src={
-                        category.id === 'productivity'
-                          ? 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80'
-                          : category.id === 'mobility'
-                            ? 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80'
-                            : 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80'
-                      }
+                      src='https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80'
                       alt={category.name}
                       loading="lazy"
                     />
@@ -340,15 +303,7 @@ const Home: React.FC = () => {
                 <Link to={`/collections/${category.id}`} className="category-card">
                   <div className="category-image">
                     <img
-                      src={
-                        category.id === 'productivity'
-                          ? 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80'
-                          : category.id === 'mobility'
-                            ? 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80'
-                            : category.id === 'sanctuary'
-                              ? 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80'
-                              : 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80'
-                      }
+                      src='https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80'
                       alt={category.name}
                       loading="lazy"
                     />
@@ -460,7 +415,7 @@ const Home: React.FC = () => {
                   <div className="testimonial-avatar">AL</div>
                   <div>
                     <div className="testimonial-name">A. Lin</div>
-                    <div className="testimonial-role">Productivity</div>
+                    <div className="testimonial-role">Software Developer</div>
                   </div>
                 </div>
               </div>
@@ -486,7 +441,7 @@ const Home: React.FC = () => {
                   <div className="testimonial-avatar">SW</div>
                   <div>
                     <div className="testimonial-name">S. Wu</div>
-                    <div className="testimonial-role">Mobility</div>
+                    <div className="testimonial-role">AI Researcher</div>
                   </div>
                 </div>
               </div>

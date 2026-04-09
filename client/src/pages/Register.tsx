@@ -107,7 +107,7 @@ const Register: React.FC = () => {
 
           <div className="register-links">
             <Link to="/login">{t('register.hasAccount')}</Link>
-            <Link to="/collections/productivity">{t('cart.continueShopping')}</Link>
+            <Link to="/collections/ebooks">{t('cart.continueShopping')}</Link>
           </div>
         </div>
       </div>

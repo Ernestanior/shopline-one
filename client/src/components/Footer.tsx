@@ -60,10 +60,7 @@ const Footer: React.FC = () => {
           <div className="footer-column">
             <h4>{t('nav.products')}</h4>
             <ul>
-              <li><a href="/collections/mobility">{t('footer.category.mobility')}</a></li>
-              <li><a href="/collections/productivity">{t('footer.category.productivity')}</a></li>
-              <li><a href="/collections/sanctuary">{t('footer.category.sanctuary')}</a></li>
-              <li><a href="/collections/savoriness">{t('footer.category.savoriness')}</a></li>
+              <li><a href="/collections/ebooks">{t('footer.category.ebooks')}</a></li>
             </ul>
           </div>
 

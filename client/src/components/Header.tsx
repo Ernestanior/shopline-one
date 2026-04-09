@@ -12,6 +12,13 @@ interface Category {
   description: string;
 }
 
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  image_url?: string;
+}
+
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
   const { language, setLanguage, t } = useLanguage();
@@ -19,6 +26,7 @@ const Header: React.FC = () => {
   const [cartCount, setCartCount] = useState(0);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const megaCloseTimerRef = useRef<number | null>(null);
@@ -33,88 +41,43 @@ const Header: React.FC = () => {
   );
 
   const megaLinks = useMemo(() => {
+    // Get first 3 products for the ebooks category
+    const ebookProducts = products.slice(0, 3);
+    
+    const links: { name: string; path: string }[] = ebookProducts.map(product => ({
+      name: product.name,
+      path: `/product/${product.id}`
+    }));
+    
+    // Only add "View all" if there are products
+    if (ebookProducts.length > 0) {
+      links.push({ name: t('mega.viewAll'), path: '/collections/ebooks' });
+    }
+    
     return {
-      productivity: [
-        { name: 'ARVIX 3 Series', path: '/collections/productivity' },
-        { name: 'The Dual plus', path: '/collections/productivity' },
-        { name: 'The Dual', path: '/collections/productivity' },
-        { name: 'Cache 3.0', path: '/collections/productivity' }
-      ],
-      mobility: [
-        { name: 'The Wallet', path: '/collections/mobility' },
-        { name: 'ARVIX 3 Series', path: '/collections/mobility' },
-        { name: 'Cache 3.0', path: '/collections/mobility' },
-        { name: 'The Dual', path: '/collections/mobility' }
-      ],
-      sanctuary: [
-        { name: t('mega.viewAll'), path: '/collections/sanctuary' }
-      ],
-      savoriness: [
-        { name: t('mega.viewAll'), path: '/collections/savoriness' }
-      ]
+      'ebooks': links
     } as Record<string, { name: string; path: string }[]>;
-  }, [t]);
+  }, [products, t]);
 
   const megaPromos = useMemo(() => {
+    // Get first 2 products for promo cards
+    const ebookProducts = products.slice(0, 2);
+    
+    const promos = ebookProducts.map(product => ({
+      title: product.name,
+      path: `/product/${product.id}`,
+      image: product.image_url || 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&q=80'
+    }));
+    
     return {
-      productivity: [
-        {
-          title: 'ARVIX 3 Series',
-          path: '/collections/productivity',
-          image: '/images/burst/product-flatlay-notebooks.jpg'
-        },
-        {
-          title: 'The Dual',
-          path: '/collections/productivity',
-          image: '/images/burst/product-laptop-white-desk.jpg'
-        }
-      ],
-      mobility: [
-        {
-          title: 'ARVIX 3 Series',
-          path: '/collections/mobility',
-          image: '/images/burst/product-laptop-white-desk.jpg'
-        },
-        {
-          title: 'The Wallet',
-          path: '/collections/mobility',
-          image: '/images/burst/product-coffee-ready-travel.jpg'
-        }
-      ],
-      sanctuary: [
-        {
-          title: 'Sanctuary',
-          path: '/collections/sanctuary',
-          image: '/images/burst/product-gold-shelf-plant.jpg'
-        },
-        {
-          title: t('mega.viewAll'),
-          path: '/collections/sanctuary',
-          image: '/images/burst/hero-minimal-workspace.jpg'
-        }
-      ],
-      savoriness: [
-        {
-          title: 'Savoriness',
-          path: '/collections/savoriness',
-          image: '/images/burst/product-coffee-ready-travel.jpg'
-        },
-        {
-          title: t('mega.viewAll'),
-          path: '/collections/savoriness',
-          image: '/images/burst/hero-working-from-home.jpg'
-        }
-      ]
+      'ebooks': promos
     } as Record<string, { title: string; path: string; image: string }[]>;
-  }, [t]);
+  }, [products]);
 
   const displayedCategories = useMemo(() => {
     if (categories.length > 0) return categories;
     return [
-      { id: 'mobility', name: t('footer.category.mobility'), description: '' },
-      { id: 'productivity', name: t('footer.category.productivity'), description: '' },
-      { id: 'sanctuary', name: t('footer.category.sanctuary'), description: '' },
-      { id: 'savoriness', name: t('footer.category.savoriness'), description: '' }
+      { id: 'ebooks', name: t('footer.category.ebooks'), description: '' }
     ];
   }, [categories, t]);
 
@@ -146,6 +109,22 @@ const Header: React.FC = () => {
       }
     };
     loadCategories();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadProducts = async () => {
+      try {
+        const data = await apiFetch<Product[]>('/api/products?category=ebooks');
+        if (!cancelled) setProducts(Array.isArray(data) ? data : []);
+      } catch {
+        if (!cancelled) setProducts([]);
+      }
+    };
+    loadProducts();
     return () => {
       cancelled = true;
     };

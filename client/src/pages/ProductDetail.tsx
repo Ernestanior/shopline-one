@@ -99,7 +99,7 @@ const ProductDetail: React.FC = () => {
         <div className="container">
           <h1>{t('product.notFound')}</h1>
           <p>{t('product.notFoundDesc')}</p>
-          <Link to="/collections/productivity" className="btn-primary">
+          <Link to="/collections/ebooks" className="btn-primary">
             {t('product.backToProducts')}
           </Link>
         </div>

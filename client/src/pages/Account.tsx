@@ -288,7 +288,7 @@ const Account: React.FC = () => {
                   </svg>
                   <h3>{t('account.noOrders')}</h3>
                   <p>{t('account.noOrders')}</p>
-                  <Link to="/collections/productivity" className="btn-shop">{t('account.startShopping')}</Link>
+                  <Link to="/collections/ebooks" className="btn-shop">{t('account.startShopping')}</Link>
                 </div>
               ) : (
                 <div className="orders-list">

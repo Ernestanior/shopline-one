@@ -116,12 +116,7 @@ const ProductCollection: React.FC = () => {
   const sortedProducts = sortProducts(filteredProducts);
   const currentCategory = getCurrentCategory();
 
-  const headerBg =
-    category === 'productivity'
-      ? '/images/burst/hero-organized-workspace.jpg'
-      : category === 'mobility'
-        ? '/images/burst/hero-working-from-home.jpg'
-        : '/images/burst/hero-minimal-workspace.jpg';
+  const headerBg = '/images/burst/hero-organized-workspace.jpg';
 
   useEffect(() => {
     const pageTitle = currentCategory?.name ? `${currentCategory.name} – ARVIX` : 'Collections – ARVIX';

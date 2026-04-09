@@ -86,7 +86,7 @@ const Login: React.FC = () => {
 
           <div className="login-links">
             <Link to="/contact">{t('footer.help')}</Link>
-            <Link to="/collections/productivity">{t('cart.continueShopping')}</Link>
+            <Link to="/collections/ebooks">{t('cart.continueShopping')}</Link>
           </div>
 
           <div className="login-note">

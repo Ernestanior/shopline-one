@@ -466,7 +466,7 @@ export default function Checkout() {
             <div className="checkout-empty">
               <h2>{t('checkout.cartEmpty')}</h2>
               <p>{t('checkout.cartEmptyDesc')}</p>
-              <Link to="/collections/productivity" className="btn-primary">
+              <Link to="/collections/ebooks" className="btn-primary">
                 {t('checkout.continueShopping')}
               </Link>
             </div>

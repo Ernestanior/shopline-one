@@ -82,7 +82,7 @@ const Test: React.FC = () => {
             <div className="links">
               <h3>Quick Links</h3>
               <a href="/">🏠 Home</a>
-              <a href="/collections/productivity">📦 Products</a>
+              <a href="/collections/ebooks">📦 Products</a>
               <a href="/cart">🛒 Cart</a>
               <a href="/about">ℹ️ About</a>
               <a href="/contact">📧 Contact</a>

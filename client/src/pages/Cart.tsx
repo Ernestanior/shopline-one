@@ -105,7 +105,7 @@ const Cart: React.FC = () => {
               </div>
               <h2>{t('cart.empty')}</h2>
               <p>{t('home.hero.subtitle')}</p>
-              <Link to="/collections/productivity" className="btn-shop-now">
+              <Link to="/collections/ebooks" className="btn-shop-now">
                 {t('home.hero.cta')}
               </Link>
             </div>

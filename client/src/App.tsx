@@ -18,6 +18,9 @@ import CheckoutPage from './pages/CheckoutPage';
 import PaymentReturnPage from './pages/PaymentReturnPage';
 import TransactionsPage from './pages/admin/TransactionsPage';
 import Admin from './pages/Admin';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import RefundPolicy from './pages/RefundPolicy';
 import { AuthProvider } from './auth/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { NotificationProvider } from './contexts/NotificationContext';
@@ -40,6 +43,9 @@ function AnimatedRoutes() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/policies/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/policies/terms-of-service" element={<TermsOfService />} />
+        <Route path="/policies/refund-policy" element={<RefundPolicy />} />
         <Route path="/test" element={<Test />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
