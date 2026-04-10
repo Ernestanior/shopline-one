@@ -223,10 +223,20 @@ const Admin: React.FC = () => {
     formData.append('image', file);
 
     try {
-      const response = await fetch('http://localhost:5002/api/upload/product-image', {
+      // Get token from localStorage
+      const token = localStorage.getItem('auth_token');
+      
+      // Build the full URL
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8787';
+      const uploadUrl = `${apiUrl}/api/upload/product-image`;
+      
+      const response = await fetch(uploadUrl, {
         method: 'POST',
         body: formData,
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
       });
 
       const data = await response.json();
