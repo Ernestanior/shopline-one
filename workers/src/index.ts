@@ -15,6 +15,7 @@ import { userRoutes } from './routes/user';
 import { adminRoutes } from './routes/admin';
 import { publicRoutes } from './routes/public';
 import { payment } from './routes/payment';
+import { uploadRoutes } from './routes/upload';
 import type { Env } from './types/env';
 import { handleScheduled } from './cron/expire-payments';
 
@@ -123,6 +124,7 @@ app.route('/api/orders', orderRoutes);
 app.route('/api/user', userRoutes);
 app.route('/api/admin', adminRoutes);
 app.route('/api/payment', payment);
+app.route('/api/upload', uploadRoutes);
 app.route('/api', publicRoutes);
 
 // Error handlers
