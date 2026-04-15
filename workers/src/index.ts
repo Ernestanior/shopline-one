@@ -123,6 +123,7 @@ app.route('/api/cart', cartRoutes);
 app.route('/api/orders', orderRoutes);
 app.route('/api/user', userRoutes);
 app.route('/api/admin', adminRoutes);
+app.route('/api/upload', adminRoutes); // Upload routes are part of admin routes
 app.route('/api/payment', payment);
 app.route('/api/upload', uploadRoutes);
 app.route('/api', publicRoutes);

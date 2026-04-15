@@ -15,6 +15,44 @@ const admin = new Hono<{ Bindings: Env }>();
 // All admin routes require admin authentication
 admin.use('*', requireAdmin);
 
+// Image upload endpoint - converts to base64 data URL
+admin.post('/upload/product-image', async (c) => {
+  try {
+    const formData = await c.req.formData();
+    const file = formData.get('image') as File;
+    
+    if (!file) {
+      return c.json({ success: false, error: 'No file provided' }, 400);
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      return c.json({ success: false, error: 'File must be an image' }, 400);
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      return c.json({ success: false, error: 'File size must be less than 2MB' }, 400);
+    }
+    
+    // Convert to base64 data URL
+    const arrayBuffer = await file.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const dataUrl = `data:${file.type};base64,${base64}`;
+    
+    return c.json({
+      success: true,
+      path: dataUrl,
+      filename: file.name,
+      size: file.size,
+      type: file.type
+    });
+  } catch (error) {
+    console.error('Upload error:', error);
+    return c.json({ success: false, error: 'Upload failed' }, 500);
+  }
+});
+
 // Product management
 admin.get('/products', async (c) => {
   const db = new DatabaseService(c.env.DB);

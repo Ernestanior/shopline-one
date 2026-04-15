@@ -180,12 +180,16 @@ const Admin: React.FC = () => {
   const saveProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    
+    // Use imagePreview if available (newly uploaded), otherwise use the form value
+    const imageValue = imagePreview || (formData.get('image') as string);
+    
     const product = {
       name: formData.get('name') as string,
       category: formData.get('category') as string,
       price: parseFloat(formData.get('price') as string),
       description: formData.get('description') as string,
-      image: formData.get('image') as string,
+      image: imageValue,
       stock: parseInt(formData.get('stock') as string),
       status: formData.get('status') as string,
       featured: formData.get('featured') === 'on' ? 1 : 0
@@ -218,44 +222,40 @@ const Admin: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      showMessage('请选择图片文件', 'error');
+      return;
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      showMessage('图片大小不能超过 2MB', 'error');
+      return;
+    }
+
     setUploadingImage(true);
-    const formData = new FormData();
-    formData.append('image', file);
 
     try {
-      // Get token from localStorage
-      const token = localStorage.getItem('auth_token');
+      // Convert image to base64 directly in the frontend
+      const reader = new FileReader();
       
-      // Build the full URL
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8787';
-      const uploadUrl = `${apiUrl}/api/upload/product-image`;
-      
-      const response = await fetch(uploadUrl, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-        headers: {
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        }
-      });
-
-      const data = await response.json();
-      
-      if (data.success) {
-        // Update the image input value
-        const imageInput = document.querySelector('input[name="image"]') as HTMLInputElement;
-        if (imageInput) {
-          imageInput.value = data.path;
-        }
-        setImagePreview(data.path);
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImagePreview(base64String);
         showMessage('图片上传成功');
-      } else {
-        showMessage('图片上传失败', 'error');
-      }
+        setUploadingImage(false);
+      };
+      
+      reader.onerror = () => {
+        showMessage('图片读取失败', 'error');
+        setUploadingImage(false);
+      };
+      
+      reader.readAsDataURL(file);
     } catch (error) {
       console.error('Upload error:', error);
-      showMessage('图片上传失败', 'error');
-    } finally {
+      showMessage('图片处理失败', 'error');
       setUploadingImage(false);
     }
   };
@@ -532,7 +532,11 @@ const Admin: React.FC = () => {
                     <td>{product.stock}</td>
                     <td>{product.status}</td>
                     <td>
-                      <button onClick={() => { setEditingProduct(product); setShowProductForm(true); }} className="btn-edit">编辑</button>
+                      <button onClick={() => { 
+                        setEditingProduct(product); 
+                        setImagePreview(null); // Reset image preview when editing
+                        setShowProductForm(true); 
+                      }} className="btn-edit">编辑</button>
                       <button onClick={() => deleteProduct(product.id)} className="btn-delete">删除</button>
                     </td>
                   </tr>
